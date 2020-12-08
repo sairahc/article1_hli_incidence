@@ -1,0 +1,970 @@
+---
+title: "Adjusted flexible models"
+subtitle: "Healthy Lifestyle Index and Risk for Common Cancers Modeled with Restricted Cubic Splines (RCS)"
+
+author: "Sairah L.F. Chen"
+date: "08/07/2020"
+output: html_document
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(rms)
+library(survival)
+library(tidyverse)
+library(ggpubr)
+library(cowplot)
+
+
+casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
+```
+
+This supplementary document provides information on the use of RCS to model non-linear Linear associations between the HLI score and risk of common cancers. As included in the main article, the six most common cancer types in the Norwegian Women and Cancer (NOWAC) cohort will be explored.
+
+## Best fit models
+
+<span style="color:gray">Figure 1. Non-linear association of HLI score and risk for common cancers. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each cancer model, and five knots for the lung cancer model, positioned at boundaries and percentiles. </span>
+
+```{r three knot plots , echo=FALSE, warning=FALSE}
+
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+
+# breast, 3 knots
+coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+
+plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20),
+                                        fun=exp),
+                            xlab= "HLI Score",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer") +
+  theme(legend.position = "none")
+
+plotBreast3
+
+#crc, 3 knots
+
+coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20),
+                                        fun=exp),
+                            xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+  ggtitle("Colorectal cancer")
+
+plotColorectal3
+
+#lung, 3 knots
+
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                    adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer")
+
+#plotLung3
+# endometrial, 3 knots
+coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 20),
+                                    fun=exp),
+                        xlab= "HLI Score",
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Endometrial cancer")
+
+plotEndometrial3
+
+
+# ovarian, 3 knots
+coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
+                                    fun=exp),
+                        xlab= "HLI Score",
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Ovarian cancer")
+
+plotOvarian3 
+
+# pancreatic, 3 knots
+coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20),
+                                    fun=exp),
+                        xlab= "HLI Score",
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Pancreatic cancer")
+
+plotPancreatic3
+
+# kidney, 3 knots
+
+coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotKidney3 <- ggplot(rms:::Predict(coxspline3Kidney, HLIScore=seq(1, 20),
+                                        fun=exp),
+                            xlab= "HLI Score",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Kidney cancer")
+
+plotKidney3
+
+#png("rcs3Knots.png", width= 1600, height = 1600)
+rcs3Knots <- plot_grid(plotBreast3,
+             plotColorectal3, 
+             plotLung3,
+             plotEndometrial3,
+             plotOvarian3,
+             plotPancreatic3,
+             plotKidney3,
+             ncol=3, nrow=3)
+#dev.off()
+#rcs3Knots
+
+#rcs3KnotsLabeled <- add_sub(rcs3Knots, 
+#                                       "Figure 1. Non-linear association of HLI score and risk for common cancers. \nShaded region visualises 95% CI. Restricted cubic splines fitted with three \nknots set at HLI score 1, 13, and 20 for each cancer model", 
+#                            size=12,
+#                            x = 0,
+#                            h = 0)
+#ggdraw(rcs3KnotsLabeled)
+
+
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/3knot_plots.png")
+rcs3Knots
+dev.off()
+
+
+coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
+                        education, data=casesIncluded, x=TRUE, y=TRUE)
+plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer")
+
+plotLung5
+
+flexibleBestFit <- plot_grid(plotBreast3,
+             plotColorectal3, 
+             plotLung5,
+             plotEndometrial3,
+             plotOvarian3,
+             plotPancreatic3,
+             plotKidney3,
+             ncol=3, nrow=3) 
+flexibleBestFit
+
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/flexible_bestfit.png")
+flexibleBestFit
+dev.off()
+
+```
+
+
+
+```{r, echo=FALSE, warning=FALSE}
+
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+coxspline5Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 5) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 4) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxBreast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ HLIScore + 
+                   education +
+                   HRTStatus +
+                   OCEverUse +
+                   parityCat +
+                   familyHistBC +
+                   ageMenarche +
+                   breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline5Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxColorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxLung <- cph(Surv(ageEntry, ageExit, statusLung) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+
+
+coxspline5Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 5) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 4) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+
+coxEndometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ HLIScore + 
+                   education +
+                   HRTStatus +
+                   OCEverUse +
+                   parityCat +
+                   ageMenarche +
+                   breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 5) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 4) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          ageMenarche +
+                          breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+
+coxOvarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ HLIScore + 
+                   education +
+                   HRTStatus +
+                   OCEverUse +
+                   parityCat +
+                   ageMenarche +
+                   breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+coxspline5Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxspline4Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxPancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+coxspline5Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+coxspline4Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+coxKidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+
+
+
+
+
+
+AIC <- cbind(c(AIC(coxspline5Breast),
+               AIC(coxspline4Breast),
+               AIC(coxspline3Breast),
+               AIC(coxBreast)),
+             c(AIC(coxspline5Colorectal),
+               AIC(coxspline4Colorectal),
+               AIC(coxspline3Colorectal),
+               AIC(coxColorectal)),
+             c(AIC(coxspline5Lung),
+               AIC(coxspline4Lung),
+               AIC(coxspline3Lung),
+               AIC(coxLung)),
+             c(AIC(coxspline5Endometrial),
+               AIC(coxspline4Endometrial),
+               AIC(coxspline3Endometrial),
+               AIC(coxEndometrial)),
+             c(AIC(coxspline5Ovarian),
+               AIC(coxspline4Ovarian),
+               AIC(coxspline3Ovarian),
+               AIC(coxOvarian)),
+             c(AIC(coxspline5Pancreatic),
+               AIC(coxspline4Pancreatic),
+               AIC(coxspline3Pancreatic),
+               AIC(coxPancreatic)),
+             c(AIC(coxspline5Kidney), 
+               AIC(coxspline4Kidney), 
+               AIC(coxspline3Kidney), 
+               AIC(coxKidney)))
+rownames(AIC) <- c("5 knots",
+                   "4 knots",
+                   "3 knots",
+                   "Linear")
+colnames(AIC) <- c("Breast",
+                   "Colorectal",
+                   "Lung",
+                   "Endometrial",
+                   "Ovarian",
+                   "Pancreatic",
+                   "Kidney")
+
+knitr::kable(as.data.frame(AIC), digits = 2,
+             caption = "Table 1. AIC values for linear and flexible models (3-5 RCS knots) among common cancers")
+```
+
+
+## Alternate spline models
+
+### Breast cancer
+
+<span style="color:gray">Figure 2. Associations between HLI and breast cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r breast knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# breast, 5 knots
+
+
+plotBreast5 <- ggplot(rms:::Predict(coxspline5Breast, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+# breast, 4 knots
+
+
+
+plotBreast4 <- ggplot(rms:::Predict(coxspline4Breast, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+
+#breast, Linear
+
+
+
+plotBreast <- ggplot(rms:::Predict(coxBreast, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+breastSplineOptions <- ggarrange(plotBreast5,
+                               plotBreast4,
+                               plotBreast,
+                               ncol=2, nrow=2)
+
+breastSplineOptions
+
+```
+
+### Colorectal cancer
+
+<span style="color:gray">Figure 3. Associations between HLI and colorectal cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r crc knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# crc, 5 knots
+
+
+plotColorectal5 <- ggplot(rms:::Predict(coxspline5Colorectal, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+# crc, 4 knots
+
+
+
+plotColorectal4 <- ggplot(rms:::Predict(coxspline4Colorectal, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+#crc, Linear
+
+
+
+plotColorectal <- ggplot(rms:::Predict(coxColorectal, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+colorectalSplineOptions <- ggarrange(plotColorectal5,
+                               plotColorectal4,
+                               plotColorectal,
+                               ncol=2, nrow=2)
+
+colorectalSplineOptions
+
+```
+
+### Lung cancer
+
+<span style="color:gray">Figure 4. Associations between HLI and lung cancer incidence. Plots display the HLI modeled as an RCS variable with four and three knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r lung knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# lung, 5 knots
+
+
+plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+# lung, 4 knots
+
+
+
+plotLung4 <- ggplot(rms:::Predict(coxspline4Lung, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+#lung, Linear
+
+
+
+plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+lungSplineOptions <- ggarrange(plotLung4,
+                               plotLung3,
+                               plotLung,
+                               ncol=2, nrow=2)
+
+lungSplineOptions
+
+```
+
+### Endometrial cancer
+
+<span style="color:gray">Figure 5. Associations between HLI and endometrial cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r endometrial knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# endo, 5 knots
+
+
+plotEndometrial5 <- ggplot(rms:::Predict(coxspline5Endometrial, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+# endo, 4 knots
+
+
+
+plotEndometrial4 <- ggplot(rms:::Predict(coxspline4Endometrial, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+#endo, Linear
+
+
+
+plotEndometrial <- ggplot(rms:::Predict(coxEndometrial, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+endometrialSplineOptions <- ggarrange(plotEndometrial5,
+                                      plotEndometrial4,
+                                      plotEndometrial,
+                               ncol=2, nrow=2)
+
+endometrialSplineOptions
+
+```
+
+### Pancreatic cancer
+
+<span style="color:gray">Figure 6. Associations between HLI and pancreatic cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r pancreatic knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# pancreatic, 5 knots
+
+
+plotPancreatic5 <- ggplot(rms:::Predict(coxspline5Pancreatic, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+#pancreatic, 4 knots
+
+
+
+plotPancreatic4 <- ggplot(rms:::Predict(coxspline4Pancreatic, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+#pancreatic, Linear
+
+
+
+plotPancreatic <- ggplot(rms:::Predict(coxPancreatic, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+pancreaticSplineOptions <- ggarrange(plotPancreatic5,
+                                      plotPancreatic4,
+                                      plotPancreatic,
+                               ncol=2, nrow=2)
+
+pancreaticSplineOptions
+
+```
+
+### Kidney cancer
+
+<span style="color:gray">Figure 7. Associations between HLI and kidney cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+```{r kidney knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# kidney, 5 knots
+
+
+plotKidney5 <- ggplot(rms:::Predict(coxspline5Kidney, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("5 knots")
+
+
+
+# kidney, 4 knots
+
+
+
+plotKidney4 <- ggplot(rms:::Predict(coxspline4Kidney, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("4 knots")
+
+
+
+#kidney, Linear
+
+
+
+plotKidney <- ggplot(rms:::Predict(coxKidney, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                   adj.subtitle = FALSE) + 
+  ggtitle("Linear")
+
+
+
+kidneySplineOptions <- ggarrange(plotKidney5,
+                                      plotKidney4,
+                                      plotKidney,
+                               ncol=2, nrow=2)
+
+kidneySplineOptions
+
+```
+
+
+## Postmenopausal breast cancer sensitivity analysis 
+
+<span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and risk for postmenopausal breast cancer. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each  model </span>
+
+
+```{r, echo=FALSE, warning=FALSE}
+casesIncluded$HLInoSmoking <- casesIncluded$dietScore +
+  casesIncluded$alcoholScore +
+  casesIncluded$physicalActivityScore +
+  casesIncluded$BMIScore
+
+casesIncluded$HLInoPA <- casesIncluded$dietScore +
+  casesIncluded$alcoholScore +
+  casesIncluded$smokingScore +
+  casesIncluded$BMIScore
+
+casesIncluded$HLInoBMI <- casesIncluded$dietScore +
+  casesIncluded$alcoholScore +
+  casesIncluded$physicalActivityScore +
+  casesIncluded$smokingScore
+
+casesIncluded$HLInoDiet<- casesIncluded$smokingScore +
+  casesIncluded$alcoholScore +
+  casesIncluded$physicalActivityScore +
+  casesIncluded$BMIScore
+
+casesIncluded$HLInoAlcohol <- casesIncluded$dietScore +
+  casesIncluded$smokingScore +
+  casesIncluded$physicalActivityScore +
+  casesIncluded$BMIScore
+
+breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmoking, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat +
+                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without smoking",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer without smoking") +
+  theme(legend.position = "none")
+
+plotbreastNoSmoking
+
+
+breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat +
+                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotbreastNoPA <- ggplot(rms:::Predict(breastNoPA, HLInoPA=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without PA",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer without PA") +
+  theme(legend.position = "none")
+
+plotbreastNoPA
+
+
+breastNoBMI <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoBMI, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat +
+                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotbreastNoBMI <- ggplot(rms:::Predict(breastNoBMI, HLInoBMI=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without BMI",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer without BMI") +
+  theme(legend.position = "none")
+
+plotbreastNoBMI
+
+
+breastNoDiet <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoDiet, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat +
+                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotbreastNoDiet <- ggplot(rms:::Predict(breastNoDiet, HLInoDiet=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without diet",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer without diet") +
+  theme(legend.position = "none")
+
+plotbreastNoDiet
+
+
+breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlcohol, 3) + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          parityCat +
+                          familyHistBC +
+                          ageMenarche +
+                          breastfeedingCat +
+                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotbreastNoAlcohol <- ggplot(rms:::Predict(breastNoAlcohol, HLInoAlcohol=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without alcohol",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Breast cancer without alcohol") +
+  theme(legend.position = "none")
+
+plotbreastNoAlcohol
+
+
+```
+
+## Lung cancer sensitivity analysis 
+
+<span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and risk for lung cancer risk. Shaded region visualises 95% CI. Restricted cubic splines fitted with five knots for each model </span>
+
+```{r, echo=FALSE, warning=FALSE}
+lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 5) + 
+                          education +
+                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without smoking",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer without smoking") +
+  theme(legend.position = "none")
+
+plotLungNoSmoking
+
+lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 5) + 
+                          education +
+                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without PA",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer without PA") +
+  theme(legend.position = "none")
+
+plotLungNoPA
+
+lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoBMI, 5) + 
+                          education +
+                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without BMI",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer without BMI") +
+  theme(legend.position = "none")
+
+plotLungNoBMI
+
+
+lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoDiet, 5) + 
+                          education +
+                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without diet",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer without diet") +
+  theme(legend.position = "none")
+
+plotLungNoDiet
+
+
+lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 5) + 
+                          education +
+                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotLungNoAlcohol <- ggplot(rms:::Predict(lungNoAlcohol, HLInoAlcohol=seq(1, 16),
+                                        fun=exp),
+                            xlab= "HLI Score without alcohol",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer without alcohol") +
+  theme(legend.position = "none")
+
+plotLungNoAlcohol
+
+
+```
+
+
+## Significance of the non-linear term
+
+```{r p-linearity, echo=FALSE}
+
+library(lmtest)
+#m2 <- cph(Surv(time, status) ~  rcs(albumin, 4), data=d)
+#anova(m2)
+#m <- cph(Surv(time, status) ~  albumin, data=d)
+
+#p.val <- 1- pchisq( (m2$loglik[2]- m$loglik[2]), 2 )
+
+anova(coxspline3Breast)
+
+pLinearityBreast <- 1- pchisq((coxspline3Breast$loglik[2] - coxBreast$loglik[2]), 2)
+pLinearityBreast
+
+pLinearityBreastOpposite <- 1- pchisq((coxBreast$loglik[2]) - coxspline3Breast$loglik[2], 2)
+pLinearityBreastOpposite
+
+lrtest(coxspline3Breast, coxBreast)
+
+#anova(coxspline3Breast, coxBreast)
+anova(coxspline3Colorectal)
+
+pLinearityColorectal <- 1- pchisq((coxspline3Colorectal$loglik[2] - coxColorectal$loglik[2]), 2)
+pLinearityColorectal
+
+
+anova(coxspline3Lung)
+
+pLinearityLung <- 1- pchisq((coxspline3Lung$loglik[2] - coxLung$loglik[2]), 2)
+pLinearityLung
+
+
+anova(coxspline3Endometrial)
+
+pLinearityEndometrial <- 1- pchisq((coxspline3Endometrial$loglik[2] - coxEndometrial$loglik[2]), 2)
+pLinearityEndometrial
+
+
+anova(coxspline3Pancreatic)
+
+pLinearityPancreatic<- 1- pchisq((coxspline3Pancreatic$loglik[2] - coxPancreatic$loglik[2]), 2)
+pLinearityPancreatic
+
+
+anova(coxspline3Kidney)
+
+pLinearityKidney<- 1- pchisq((coxspline3Kidney$loglik[2] - coxKidney$loglik[2]), 2)
+pLinearityKidney
+
+``` 
+
+
+
+
