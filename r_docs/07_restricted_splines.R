@@ -1,7 +1,11 @@
-# Restricted cubic splines ----
-#     Why? Test the hypoth that HLI score and HR are not linear 
-#           Are there natural break points in the HLI score and cancer risk? 
+#==============================================================
+# Title: 07_restricted_splines
+# Author: Sairah L. F. Chen
 
+
+
+# Description: see rcs.Rmd for final restricted spline analysis
+#       This file is just playing around w RCS
 
 #---------------------------------
 # these rms functions work 
