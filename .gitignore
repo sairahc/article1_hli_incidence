@@ -1,0 +1,6 @@
+.RDataTmp
+.RData
+data/*
+psfmi/*
+output/*
+.Rproj.user
