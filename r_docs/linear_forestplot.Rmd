@@ -7,7 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(ggplot2)
-library(forestplot)
 ```
 
 
@@ -30,9 +29,9 @@ df <- data.frame(label, estimate, lower_ci, upper_ci)
 df$label <- factor(df$label, levels=rev(df$label))
 
 fp <- ggplot(data=df, aes(x=label, y=estimate, ymin=lower_ci, ymax=upper_ci)) +
-        geom_pointrange(color="blue") + 
-        geom_errorbar(aes(ymin=lower_ci, ymax=upper_ci),width=0.1, color="blue")+
-        theme(text = element_text(size=25))+
+        geom_pointrange(color="blue", size=1) + 
+        geom_errorbar(aes(ymin=lower_ci, ymax=upper_ci),width=0.1, size=1, color="blue")+
+        theme(text = element_text(size=35))+
         geom_hline(yintercept=1, lty=2) +  # add a dotted line at x=1 after flip
         coord_flip() +# flip coordinates (puts labels on y axis)
         xlab("Cancer type") + ylab("HR (95% CI)")
@@ -45,13 +44,19 @@ for (i in 1:7) {
 }
  # c("0.97(0.96-0.98)", "0.98(0.97-1.00", "0.86(0.85-")
         
-fp_labels <- fp + geom_text(size=7, aes(y=labpos, label=labels, hjust=0)) 
+fp_labels <- fp + geom_text(size=9, aes(y=labpos, label=labels, hjust=0)) 
+fp_with_labels <- fp_labels+ylim(c(0.82,1.10))
 
 # save to png
 png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/forest_plot.png", width=1600, height=1200)
-fp_labels+ylim(c(0.82,1.10))
+fp_with_labels
 dev.off()
 
-fp_labels
+#save to pdf
+pdf("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/forest_plot.pdf", width=20, height=20)
+print(fp_with_labels)
+dev.off()
+
+
 ```
 
