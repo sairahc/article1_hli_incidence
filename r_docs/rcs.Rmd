@@ -913,3 +913,57 @@ rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs
 
 
 
+## Significance of the non-linear term
+
+```{r p-linearity, include=FALSE}
+
+ 
+library(lmtest)
+ 
+#m2 <- cph(Surv(time,status) ~  rcs(albumin, 4), data=d)
+ 
+#anova(m2)
+ 
+#m <- cph(Surv(time, status) ~  albumin, data=d)
+
+ 
+#p.val <- 1- pchisq( (m2$loglik[2]- m$loglik[2]), 2 )
+
+ 
+#anova(coxspline3Breast)
+pLinearityBreast <- 1- pchisq((coxspline3Breast$loglik[2] - coxBreast$loglik[2]), 2)
+pLinearityBreast
+
+ 
+#anova(coxspline3Breast, coxBreast)
+
+anova(coxspline3Colorectal)
+
+ 
+pLinearityColorectal <- 1- pchisq((coxspline3Colorectal$loglik[2] - coxColorectal$loglik[2]), 2)
+pLinearityColorectal
+
+ 
+anova(coxspline5Lung)
+
+pLinearityLung <- 1- pchisq((coxspline5Lung$loglik[2] - coxLung$loglik[2]), 2)
+pLinearityLung
+
+ 
+anova(coxspline3Endometrial)
+
+pLinearityEndometrial <- 1- pchisq((coxspline3Endometrial$loglik[2] - coxEndometrial$loglik[2]), 2)
+pLinearityEndometrial
+
+anova(coxspline3Pancreatic)
+ 
+pLinearityPancreatic<- 1- pchisq((coxspline3Pancreatic$loglik[2] - coxPancreatic$loglik[2]), 2)
+pLinearityPancreatic
+
+ 
+anova(coxspline3Kidney)
+
+pLinearityKidney<- 1- pchisq((coxspline3Kidney$loglik[2] - coxKidney$loglik[2]), 2)
+pLinearityKidney
+
+ 
