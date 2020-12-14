@@ -1,6 +1,6 @@
 # -----------------------------------------------
 
-# script name: Cox regression
+# script name: 5. Cox regression
 # author: Sairah Lai Fa Chen
 
 # data: NOWAC diet cohort
