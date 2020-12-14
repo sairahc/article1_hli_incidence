@@ -1,5 +1,12 @@
-# survival analysis ----
+# -----------------------------------------------
 
+# script name: Cox regression
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: linear survival analysis of complete case and imputed data
+
+# packages
 library(survival)
 library(survminer)
 library(lubridate)
@@ -8,20 +15,15 @@ library(foreign)
 library(psfmi)
 library(mice)
 
+# -------------------------------------------------
 
-#----
 # median follow-up time----
 
-#reverse KM
+# using reverse KM method
 library(prodlim)
 library(Publish)
 
 quantile(prodlim(Hist(followUpTime, statusColorectal)~1,data=df,reverse=TRUE))
-
-
-df$followUpTimeMock <- ifelse(df$smokingStatus == 1, #mock to test
-                              5,
-                              df$followUpTime)
 
 quantile(prodlim(Hist(followUpTimeMock, statusColorectal)~1,data=df,reverse=TRUE)) #mock
 

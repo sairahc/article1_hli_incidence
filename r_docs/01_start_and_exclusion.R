@@ -1,8 +1,16 @@
-# START
-#----
+# ================================================
+# script name: 1. Start and exclusion
+# author: Sairah Lai Fa Chen
 
+# data: NOWAC diet cohort
+# description: cleaning, dates, renaming vars, excluding obs caught by exclusion criteria
+
+# packages
 library(tidyverse)
 library(lubridate)
+# ================================================
+
+
 
 df <- read.csv2("C:/Users/sch044/OneDrive - UiT Office 365/R/Data/Data150420.csv")
 

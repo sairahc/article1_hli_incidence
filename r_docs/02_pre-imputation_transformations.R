@@ -1,7 +1,18 @@
-# PRE-IMPUTATION TRANSFORMATIONS
-#----
+# ================================================
+
+# script name: 2. Pre-imputation transformations
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: variable transformations that must be complete before imputation and analysis 
+#             of both complete case and imputed data
+
+# packages
 library(tidyverse)
 library(lubridate)
+# ================================================
+
+
 
 # Smoking variables----
 

@@ -1,20 +1,20 @@
-#==============================================================
-# Title: 07_restricted_splines
-# Author: Sairah L. F. Chen
+# ===========================================
 
+# script name: 7. Restricted Cubic Splines
+# author: Sairah Lai Fa Chen
 
+# data: NOWAC diet cohort
+# description: playing around with flexible models
 
-# Description: see rcs.Rmd for final restricted spline analysis
-#       This file is just playing around w RCS
-
-#---------------------------------
-# these rms functions work 
-
+# packages
 library(rms)
 library(survival)
 library(tidyverse)
 library(ggpubr)
 library(gridExtra)
+# ===========================================
+
+
 # lung, 5 knots
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")

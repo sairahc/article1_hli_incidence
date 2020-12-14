@@ -1,3 +1,22 @@
+# ===========================================
+
+# script name: 8. Reverse causality
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: testing for reverse causality by excluding first 2 yrs followup 
+
+# packages
+library(tidyverse)
+library(survival)
+
+# ===========================================
+
+
+
+
+
+
 # exclude those diagnosed with cancer within 2 years fu time
 # run analysis on observed dataset
 

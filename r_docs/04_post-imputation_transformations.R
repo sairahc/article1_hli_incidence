@@ -1,7 +1,12 @@
-# POST IMPUTATION TRANSFORMATIONS
-# always do everytime 
-#----
+# ================================================
 
+# script name: 4. Post-imputation transformations
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: transformations to vars that need to be completed after imputation
+
+# packages
 library(lubridate)
 library(tidyverse)
 library(missForest)
@@ -9,6 +14,7 @@ library(Hmisc)
 library(mice)
 library(VIM)
 library(rms)
+# ================================================
 
 # merge with pre imputation dataset to get the rest of the variables unincluded in imputation
 convertMidsToLongMerged <- function(imputedMids, casesIncludedDataframe){

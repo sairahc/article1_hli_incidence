@@ -1,13 +1,15 @@
+# ================================================
+# script name: 6. Descriptives
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: extracting cohort characteristics overall and in HLI groups
+
+# packages
 library(tidyverse)
 library(MASS)
+# ================================================
 
-# variable generation for descriptive table purposes
-casesIncluded$active <- case_when(casesIncluded$physicalActivity < 6 ~ 0,
-                                  casesIncluded$physicalActivity >=6 ~ 1)
-
-casesIncluded$breastfeedingCat <- case_when(casesIncluded$breastfeedMths == 0 ~ 0,
-                                            casesIncluded$breastfeedMths > 0 & casesIncluded$breastfeedMths <= 12 ~ 1,
-                                            casesIncluded$breastfeedMths>12 ~ 2)
 
 #create complete cases dataset
 casesIncludedComplete <- filter(casesIncluded, !is.na(HLIScore))
@@ -19,13 +21,15 @@ casesIncludedCompleteBreast <- filter(casesIncluded, !is.na(HLIScore) &
                                         !is.na(OCEverUse) &
                                         !is.na(ageMenarche) &
                                         !is.na(parity) &
+                                        !is.na(breastfeedMths)&
                                         !is.na(familyHistBC))
 
-casesIncludedCompleteEndometrial <- filter(casesIncluded, !is.na(HLIScore) & 
+casesIncludedCompleteEndometrialOvarian <- filter(casesIncluded, !is.na(HLIScore) & 
                                         !is.na(education) &
                                         !is.na(HRTStatus) &
                                         !is.na(OCEverUse) &
                                         !is.na(ageMenarche) &
+                                        !is.na(breastfeedMths)&
                                         !is.na(parity))
 
 
@@ -81,12 +85,14 @@ View(prop)
 
 
 # remove pre-menopausal cancer to get correct number of post-meno breast and endometrial cases
-casesPostMeno <- filter(casesIncluded, ageDiagnosis - ageMenopause > 0 |
-                          is.na(ageDiagnosis))
+casesPostMenoBreast <- filter(casesIncludedCompleteBreast, ageExit - ageMenopause > 0)
+
+casesPostMenoEndometrialOvarian <- filter(casesIncludedCompleteEndometrialOvarian, ageExit - ageMenopause > 0)
 
 # get counts of postmeno cancer cases across HLI cats
-prop <- casesPostMeno %>%
-  group_by(HLI4, statusOvarian) %>%
+      # remember to input correct dataframe
+prop <- casesPostMenoEndometrialOvarian %>%
+  group_by(HLI4, statusEndometrial) %>%
   summarise(
     count = n()) %>%
   mutate(freq = count / sum(count))

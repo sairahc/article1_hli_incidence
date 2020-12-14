@@ -1,22 +1,12 @@
-# IMPUTATION
-#----
+# ===========================================
 
-# do not run
-# check if survival is different in BMI missing compared to BMI complete
-#casesIncluded$isMissingBMI <- ifelse(is.na(casesIncluded$BMI),
-#                                     TRUE,
-#                                     FALSE)
-#
-#KMbmi <- survfit(Surv(followUpTime, statusColorectal) ~ isMissingBMI, 
-#                 data= casesIncluded)
-#ggsurvplot(
-#  fit= KMbmi,
-#  xlab="Days",
-#  ylab= "Probability of no CRC"
-#)
-#survdiff(Surv(followUpTime,statusColorectal) ~ isMissingBMI, data=casesIncluded)
-#------------------------------------------------------------------------
-# run
+# script name: 3. Imputation
+# author: Sairah Lai Fa Chen
+
+# data: NOWAC diet cohort
+# description: impute 
+
+# packages
 
 install.packages("missForest")
 install.packages("Hmisc")
@@ -32,6 +22,8 @@ library(VIM)
 library(rms)
 library(tidyverse)
 library(survival)
+# ==========================================
+
 
 
 # Nelson-Aalen estimator ----
@@ -132,4 +124,26 @@ sapply(complete(imputedMids), function(x) sum(is.na(x)))
 
 # save
 saveRDS(imputedMids, "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/data/imputedMids21082020.RDS")
+
+
+
+
+
+
+# ----------------------------------------------------------------
+# do not run
+# check if survival is different in BMI missing compared to BMI complete
+#casesIncluded$isMissingBMI <- ifelse(is.na(casesIncluded$BMI),
+#                                     TRUE,
+#                                     FALSE)
+#
+#KMbmi <- survfit(Surv(followUpTime, statusColorectal) ~ isMissingBMI, 
+#                 data= casesIncluded)
+#ggsurvplot(
+#  fit= KMbmi,
+#  xlab="Days",
+#  ylab= "Probability of no CRC"
+#)
+#survdiff(Surv(followUpTime,statusColorectal) ~ isMissingBMI, data=casesIncluded)
+#------------------------------------------------------------------------
 
