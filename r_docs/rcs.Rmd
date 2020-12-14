@@ -70,7 +70,7 @@ plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20
 
 plotColorectal3
 
-#lung, 3 knots
+#lung, 5 knots
 
 
 coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
@@ -85,16 +85,7 @@ plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
 plotLung5
 
 
-coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
-plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                    adj.subtitle = FALSE) + 
-  ggtitle("3 knots")
-
-#plotLung3
 # endometrial, 3 knots
 coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
                           education +
@@ -240,8 +231,7 @@ coxspline4Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIS
 
 coxColorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
 
-
-coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 coxspline4Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -490,15 +480,15 @@ options(datadist="ddist")
 # lung, 5 knots
 
 
-plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
 
+plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
+                                  fun=exp),
+                      xlab= "HLI Score",
+                    ylab="HR",
+                    adj.subtitle = FALSE) + 
+  ggtitle("3 knots")
 
-
+#plotLung3
 # lung, 4 knots
 
 
@@ -525,8 +515,8 @@ plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
 
 
 
-lungSplineOptions <- ggarrange(plotLung4,
-                               plotLung3,
+lungSplineOptions <- ggarrange(plotLung3,
+                               plotLung4,
                                plotLung,
                                ncol=2, nrow=2)
 
@@ -918,7 +908,7 @@ plotLungNoAlcohol
 
 ```
 
-
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcs.pdf")
 
 
 
