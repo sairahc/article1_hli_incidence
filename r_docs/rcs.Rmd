@@ -1,10 +1,10 @@
 ---
 title: "Adjusted flexible models"
-subtitle: "Healthy Lifestyle Index and Risk for Common Cancers Modeled with Restricted Cubic Splines (RCS)"
+subtitle: "[article title]Healthy Lifestyle Index and Incidence of Common Cancers in NOWAC Modeled with Restricted Cubic Splines (RCS)"
 
 author: "Sairah L.F. Chen"
 date: "08/07/2020"
-output: html_document
+output: pdf_document
 
 
 ---
@@ -21,13 +21,15 @@ library(cowplot)
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
 
-This supplementary document provides information on the use of RCS to model non-linear Linear associations between the HLI score and risk of common cancers. As included in the main article, the six most common cancer types in the Norwegian Women and Cancer (NOWAC) cohort will be explored.
+This supplementary document provides information on the use of RCS to model nonlinear associations between the HLI score and incidence of common cancers. 
+
 
 ## Best fit models
 
-<span style="color:gray">Figure 1. Non-linear association of HLI score and risk for common cancers. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each cancer model, and five knots for the lung cancer model, positioned at boundaries and percentiles. </span>
 
-```{r three knot plots , echo=FALSE, warning=FALSE}
+<span style="color:gray">Non-linear association of HLI score and risk for common cancers. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each cancer model, and five knots for the lung cancer model, positioned at boundaries and percentiles. </span>
+
+```{r best fit plots , echo=FALSE, warning=FALSE}
 
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")
@@ -70,6 +72,19 @@ plotColorectal3
 
 #lung, 3 knots
 
+
+coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
+                        education, data=casesIncluded, x=TRUE, y=TRUE)
+plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
+                   fun=exp),
+       xlab= "HLI Score",
+     ylab="HR",
+     adj.subtitle = FALSE) + 
+  ggtitle("Lung cancer")
+
+plotLung5
+
+
 coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
@@ -77,7 +92,7 @@ plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
                       xlab= "HLI Score",
                     ylab="HR",
                     adj.subtitle = FALSE) + 
-  ggtitle("Lung cancer")
+  ggtitle("3 knots")
 
 #plotLung3
 # endometrial, 3 knots
@@ -162,21 +177,9 @@ rcs3Knots <- plot_grid(plotBreast3,
 #ggdraw(rcs3KnotsLabeled)
 
 
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/3knot_plots.png")
-rcs3Knots
-dev.off()
 
 
-coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
-                        education, data=casesIncluded, x=TRUE, y=TRUE)
-plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("Lung cancer")
 
-plotLung5
 
 flexibleBestFit <- plot_grid(plotBreast3,
              plotColorectal3, 
@@ -188,6 +191,10 @@ flexibleBestFit <- plot_grid(plotBreast3,
              ncol=3, nrow=3) 
 flexibleBestFit
 
+
+
+```
+```{r, include=FALSE}
 png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/flexible_bestfit.png")
 flexibleBestFit
 dev.off()
@@ -355,7 +362,7 @@ colnames(AIC) <- c("Breast",
                    "Kidney")
 
 knitr::kable(as.data.frame(AIC), digits = 2,
-             caption = "Table 1. AIC values for linear and flexible models (3-5 RCS knots) among common cancers")
+             caption = "AIC values for linear and flexible models (3-5 RCS knots) among common cancers")
 ```
 
 
@@ -363,7 +370,7 @@ knitr::kable(as.data.frame(AIC), digits = 2,
 
 ### Breast cancer
 
-<span style="color:gray">Figure 2. Associations between HLI and breast cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+<span style="color:gray">Figure 2. Associations between HLI and breast cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r breast knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -419,7 +426,7 @@ breastSplineOptions
 
 ### Colorectal cancer
 
-<span style="color:gray">Figure 3. Associations between HLI and colorectal cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+<span style="color:gray">Figure 3. Associations between HLI and colorectal cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r crc knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -529,7 +536,7 @@ lungSplineOptions
 
 ### Endometrial cancer
 
-<span style="color:gray">Figure 5. Associations between HLI and endometrial cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+<span style="color:gray">Figure 5. Associations between HLI and endometrial cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r endometrial knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -584,7 +591,7 @@ endometrialSplineOptions
 
 ### Pancreatic cancer
 
-<span style="color:gray">Figure 6. Associations between HLI and pancreatic cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+<span style="color:gray">Figure 6. Associations between HLI and pancreatic cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r pancreatic knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -639,7 +646,7 @@ pancreaticSplineOptions
 
 ### Kidney cancer
 
-<span style="color:gray">Figure 7. Associations between HLI and kidney cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered Linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+<span style="color:gray">Figure 7. Associations between HLI and kidney cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r kidney knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -912,58 +919,6 @@ plotLungNoAlcohol
 ```
 
 
-## Significance of the non-linear term
-
-```{r p-linearity, echo=FALSE}
-
-library(lmtest)
-#m2 <- cph(Surv(time, status) ~  rcs(albumin, 4), data=d)
-#anova(m2)
-#m <- cph(Surv(time, status) ~  albumin, data=d)
-
-#p.val <- 1- pchisq( (m2$loglik[2]- m$loglik[2]), 2 )
-
-anova(coxspline3Breast)
-
-pLinearityBreast <- 1- pchisq((coxspline3Breast$loglik[2] - coxBreast$loglik[2]), 2)
-pLinearityBreast
-
-pLinearityBreastOpposite <- 1- pchisq((coxBreast$loglik[2]) - coxspline3Breast$loglik[2], 2)
-pLinearityBreastOpposite
-
-lrtest(coxspline3Breast, coxBreast)
-
-#anova(coxspline3Breast, coxBreast)
-anova(coxspline3Colorectal)
-
-pLinearityColorectal <- 1- pchisq((coxspline3Colorectal$loglik[2] - coxColorectal$loglik[2]), 2)
-pLinearityColorectal
-
-
-anova(coxspline3Lung)
-
-pLinearityLung <- 1- pchisq((coxspline3Lung$loglik[2] - coxLung$loglik[2]), 2)
-pLinearityLung
-
-
-anova(coxspline3Endometrial)
-
-pLinearityEndometrial <- 1- pchisq((coxspline3Endometrial$loglik[2] - coxEndometrial$loglik[2]), 2)
-pLinearityEndometrial
-
-
-anova(coxspline3Pancreatic)
-
-pLinearityPancreatic<- 1- pchisq((coxspline3Pancreatic$loglik[2] - coxPancreatic$loglik[2]), 2)
-pLinearityPancreatic
-
-
-anova(coxspline3Kidney)
-
-pLinearityKidney<- 1- pchisq((coxspline3Kidney$loglik[2] - coxKidney$loglik[2]), 2)
-pLinearityKidney
-
-``` 
 
 
 
