@@ -1,8 +1,12 @@
 ---
-title: "linear_forestplot"
+title: "linear forest plot for main article" 
+subtitle: "Association between HLI and common cancer incidence in NOWAC"
 author: "Sairah L.F. Chen"
 date: "06/11/2020"
-output: html_document
+
+
+# Do not knit
+# This document is for generating png (or other format) of forest plot for main article
 ---
 
 ```{r setup, include=FALSE}

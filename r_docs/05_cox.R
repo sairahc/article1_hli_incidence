@@ -90,24 +90,13 @@ completeCoxColorectalCat <- coxph(Surv(ageEntry, ageExit, statusColorectal)~
 #           legend.title = "HLI score groups")
 
 
-#cox <- coxph(Surv(followUpTime, statusColorectal)~ HLI5 + age + education, data=casesIncluded)
-#levels(casesIncluded$HLI5)[1] <- "1"
-#levels(casesIncluded$HLI5)[2] <- "2"
-#levels(casesIncluded$HLI5)[3] <- "3"
-#levels(casesIncluded$HLI5)[4] <- "4"
-#casesIncluded$HLI5 <- as.numeric(casesIncluded$HLI5)
 
 
-#ggadjustedcurves(cox,
-#                variable = "HLI5",
-#                 data=casesIncluded,
-#                 legent.title="HLI group",
-#                 fun = "cumhaz")
 
 
 # Lung cancer ----
 
-
+# HLI continuous
 completeCoxCrudeLung <- coxph(Surv(ageEntry, ageExit, statusLung) ~ HLIScore, data = casesIncluded)
 
 completeCoxLung<- coxph(Surv(ageEntry, ageExit, statusLung)~ HLIScore + education, data = casesIncluded)
@@ -122,26 +111,30 @@ completeCoxLungCat <- coxph(Surv(ageEntry, ageExit, statusLung)~
 
 # endometrial cancer ----
 
+# HLI continuous
 completeCoxCrudeEndometrial <- coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ HLIScore, data=casesIncluded)
 
-multivariateEndometrialCox <- function(dataframe,HLIscore) {
-  coxObject <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~
-                       HLIscore + 
-                       education +
-                       HRTStatus +
-                       OCEverUse +
-                       ageMenarche + 
-                       parityCat +
-                       breastfeedingCat,
-                     data = dataframe)
-}
 
+completeCoxEndometrial <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~
+                          HLIscore + 
+                          education +
+                          HRTStatus +
+                          OCEverUse +
+                          ageMenarche + 
+                          parityCat +
+                          breastfeedingCat,
+                        data = casesIncluded)
 
-completeCoxEndometrial <- multivariateEndometrialCox(casesIncluded,
-                                           casesIncluded$HLIScore)
 #model with HLI as categorical
-completeCoxEndometrialCat <- multivariateEndometrialCox(casesIncluded,
-                                              casesIncluded$HLI4relevel)
+completeCoxEndometrialCat <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~ 
+                                 relevel(factor(HLI4), ref = "(10,15]") +
+                                 education +
+                                 HRTStatus +
+                                 OCEverUse +
+                                 ageMenarche + 
+                                 parityCat +
+                                 breastfeedingCat, 
+                               data= casesIncluded)
 
 # ovarian cancer ----
 completeCoxOvarian <- coxph(Surv(ageMenopause, ageExit, statusOvarian) ~ 

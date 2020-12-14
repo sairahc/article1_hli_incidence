@@ -3,8 +3,8 @@ title: "Grid plot of best fit flexible models"
 subtitle: "Association between HLI and common cancer incidence in NOWAC"
 author: "Sairah L.F. Chen"
 date: "11/12/2020"
-output: pdf_document
 
+# Do not knit
 # document is for generating an image to be published in the main article
 ---
 

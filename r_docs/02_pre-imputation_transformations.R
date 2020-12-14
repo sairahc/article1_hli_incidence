@@ -111,6 +111,17 @@ calculateGrAlcohol <- function(dataframe){
 
 casesIncluded <- calculateGrAlcohol(casesIncluded)
 
+# physical activity (dichotomize PA scale for descriptive purposes)
+
+findActive <- function(dataframe) {
+  dataframe %>%
+    mutate(active = case_when(dataframe$physicalActivity < 6 ~ 0,
+                              dataframe$physicalActivity >=6 ~ 1
+                              ))
+}
+
+casesIncluded <- findActive(casesIncluded) 
+
 # Whole grain bread----
 
 calculateGrWholeGrainBread <- function(dataframe){
@@ -343,6 +354,17 @@ categorizeParity <- function(dataframe){
 }
 
 casesIncluded <- categorizeParity(casesIncluded)
+
+
+# breastfeeding categories
+categorizeBreastfeeding <- function(dataframe) {
+  dataframe %>%
+    mutate(breastfeedingCat = case_when(dataframe$breastfeedMths == 0 ~ 0,
+                                        dataframe$breastfeedMths > 0 & dataframe$breastfeedMths <= 12 ~ 1,
+                                        dataframe$breastfeedMths>12 ~ 2))
+}
+
+casesIncluded <- categorizeBreastfeeding(casesIncluded)
 
 
 # Cancer incident? (0 = no, 1 = yes) Prevalent cancer will be filtered out anyways in exclusion.R

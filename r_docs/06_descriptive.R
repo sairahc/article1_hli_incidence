@@ -67,13 +67,13 @@ descriptivesByGroup <- function(dataframe, variable) {
 }
 
 
-desc <- descriptivesByGroup(casesIncludedComplete, dietScoreFull)
+desc <- descriptivesByGroup(casesIncludedComplete, height)
 View(desc)
 
 # couldnt manage to make function for proportions
 # manually switch out *variable*
 prop <- casesIncludedComplete %>%
-  group_by(HLI4, statusPancreatic) %>%
+  group_by(HLI4, active) %>%
   summarise(
     count = n()) %>%
   mutate(freq = count / sum(count))
@@ -81,7 +81,8 @@ View(prop)
 
 
 # remove pre-menopausal cancer to get correct number of post-meno breast and endometrial cases
-casesPostMeno <- filter(casesIncludedComplete, ageDiagnosis - ageMenopause > 0)
+casesPostMeno <- filter(casesIncluded, ageDiagnosis - ageMenopause > 0 |
+                          is.na(ageDiagnosis))
 
 # get counts of postmeno cancer cases across HLI cats
 prop <- casesPostMeno %>%
