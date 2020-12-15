@@ -29,14 +29,13 @@ This supplementary document provides information on the use of RCS to model nonl
 
 <span style="color:gray">Non-linear association of HLI score and risk for common cancers. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each cancer model, and five knots for the lung cancer model, positioned at boundaries and percentiles. </span>
 
-```{r best fit plots , echo=FALSE, warning=FALSE}
-
+```{r, setup datadist, include=FALSE}
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")
 ddist$limits["Adjust to", "HLIScore"] <- 5
-ddist <- update(ddist)
+```
 
-
+```{r best fit plots , echo=FALSE, warning=FALSE}
 
 
 # breast, 3 knots
@@ -53,12 +52,13 @@ coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore
 
 plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20), 
                                     ref.zero = TRUE,
-                                        fun=exp),
+                                    fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Breast cancer") +
-  theme(legend.position = "none")
+                            ylab="HR",
+                            adj.subtitle = FALSE) +
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("Breast cancer") +
+              theme(legend.position = "none")
 
 plotBreast3
 
@@ -70,9 +70,10 @@ plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20
                                         ref.zero = TRUE,
                                         fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                          adj.subtitle = FALSE) + 
-  ggtitle("Colorectal cancer")
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Colorectal cancer")
 
 plotColorectal3
 
@@ -81,13 +82,15 @@ plotColorectal3
 
 coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
                         education, data=casesIncluded, x=TRUE, y=TRUE)
+
 plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
-                                  ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("Lung cancer")
+                                    ref.zero = TRUE,
+                                    fun=exp),
+                                    xlab= "HLI Score",
+                                    ylab="HR",
+                                    adj.subtitle = FALSE) + 
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("Lung cancer")
 
 plotLung5
 
@@ -104,11 +107,12 @@ coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rc
 
 plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
-                                    fun=exp),
+                                         fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Endometrial cancer")
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Endometrial cancer")
 
 plotEndometrial3
 
@@ -124,11 +128,12 @@ coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLISco
 
 plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
                                      ref.zero = TRUE,
-                                    fun=exp),
+                                     fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Ovarian cancer")
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("Ovarian cancer")
 
 plotOvarian3 
 
@@ -137,11 +142,12 @@ coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIS
 
 plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                                    fun=exp),
+                                        fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Pancreatic cancer")
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Pancreatic cancer")
 
 plotPancreatic3
 
@@ -151,11 +157,12 @@ coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 3)
 
 plotKidney3 <- ggplot(rms:::Predict(coxspline3Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
-                                        fun=exp),
+                                    fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Kidney cancer")
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("Kidney cancer")
 
 plotKidney3
 
@@ -207,8 +214,8 @@ dev.off()
 
 ```{r, echo=FALSE, warning=FALSE}
 
-ddist <- datadist(casesIncluded)
-options(datadist="ddist")
+
+
 coxspline5Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 5) + 
                           education +
                           HRTStatus +
@@ -374,19 +381,19 @@ knitr::kable(as.data.frame(AIC), digits = 2,
 <span style="color:gray">Figure 2. Associations between HLI and breast cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
 
 ```{r breast knot plots, echo=FALSE}
-ddist <- datadist(casesIncluded)
-options(datadist="ddist")
+
 
 # breast, 5 knots
 
 
 plotBreast5 <- ggplot(rms:::Predict(coxspline5Breast, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
+                                    fun=exp),
+                            xlab= "HLI Score",
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("5 knots")
 
 
 
@@ -396,11 +403,12 @@ plotBreast5 <- ggplot(rms:::Predict(coxspline5Breast, HLIScore=seq(1, 20),
 
 plotBreast4 <- ggplot(rms:::Predict(coxspline4Breast, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                    fun=exp),
+                            xlab= "HLI Score",
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("4 knots")
 
 
 
@@ -411,11 +419,12 @@ plotBreast4 <- ggplot(rms:::Predict(coxspline4Breast, HLIScore=seq(1, 20),
 
 plotBreast <- ggplot(rms:::Predict(coxBreast, HLIScore=seq(1, 20),
                                    ref.zero = TRUE,
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                                    fun=exp),
+                            xlab= "HLI Score",
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("Linear")
 
 
 
@@ -441,11 +450,12 @@ options(datadist="ddist")
 
 plotColorectal5 <- ggplot(rms:::Predict(coxspline5Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("5 knots")
 
 
 
@@ -455,11 +465,12 @@ plotColorectal5 <- ggplot(rms:::Predict(coxspline5Colorectal, HLIScore=seq(1, 20
 
 plotColorectal4 <- ggplot(rms:::Predict(coxspline4Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("4 knots")
 
 
 
@@ -469,11 +480,12 @@ plotColorectal4 <- ggplot(rms:::Predict(coxspline4Colorectal, HLIScore=seq(1, 20
 
 plotColorectal <- ggplot(rms:::Predict(coxColorectal, HLIScore=seq(1, 20),
                                        ref.zero = TRUE,
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                  geom_hline(yintercept=1, linetype="dashed") +
+                  ggtitle("Linear")
 
 
 
@@ -501,10 +513,11 @@ options(datadist="ddist")
 plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
                                   ref.zero = TRUE,
                                   fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                    adj.subtitle = FALSE) + 
-  ggtitle("3 knots")
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("3 knots")
 
 #plotLung3
 # lung, 4 knots
@@ -513,11 +526,12 @@ plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
 
 plotLung4 <- ggplot(rms:::Predict(coxspline4Lung, HLIScore=seq(1, 20),
                                   ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                  fun=exp),
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("4 knots")
 
 
 
@@ -527,11 +541,12 @@ plotLung4 <- ggplot(rms:::Predict(coxspline4Lung, HLIScore=seq(1, 20),
 
 plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
                                  ref.zero = TRUE,
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                                 fun=exp),
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+            geom_hline(yintercept=1, linetype="dashed") +
+            ggtitle("Linear")
 
 
 
@@ -557,11 +572,12 @@ options(datadist="ddist")
 
 plotEndometrial5 <- ggplot(rms:::Predict(coxspline5Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
+                                         fun=exp),
+                                  xlab= "HLI Score",
+                                  ylab="HR",
+                                  adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("5 knots")
 
 
 
@@ -571,11 +587,12 @@ plotEndometrial5 <- ggplot(rms:::Predict(coxspline5Endometrial, HLIScore=seq(1, 
 
 plotEndometrial4 <- ggplot(rms:::Predict(coxspline4Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                         fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("4 knots")
 
 
 
@@ -585,11 +602,12 @@ plotEndometrial4 <- ggplot(rms:::Predict(coxspline4Endometrial, HLIScore=seq(1, 
 
 plotEndometrial <- ggplot(rms:::Predict(coxEndometrial, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+    ggtitle("Linear")
 
 
 
@@ -615,11 +633,12 @@ options(datadist="ddist")
 
 plotPancreatic5 <- ggplot(rms:::Predict(coxspline5Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                  geom_hline(yintercept=1, linetype="dashed") +
+                  ggtitle("5 knots")
 
 
 
@@ -629,11 +648,12 @@ plotPancreatic5 <- ggplot(rms:::Predict(coxspline5Pancreatic, HLIScore=seq(1, 20
 
 plotPancreatic4 <- ggplot(rms:::Predict(coxspline4Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                        fun=exp),
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("4 knots")
 
 
 
@@ -643,11 +663,12 @@ plotPancreatic4 <- ggplot(rms:::Predict(coxspline4Pancreatic, HLIScore=seq(1, 20
 
 plotPancreatic <- ggplot(rms:::Predict(coxPancreatic, HLIScore=seq(1, 20),
                                        ref.zero = TRUE,
-                                  fun=exp),
+                                        fun=exp),
                       xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+                  geom_hline(yintercept=1, linetype="dashed") +
+                  ggtitle("Linear")
 
 
 
@@ -673,11 +694,12 @@ options(datadist="ddist")
 
 plotKidney5 <- ggplot(rms:::Predict(coxspline5Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("5 knots")
+                                    fun=exp),
+                      xlab= "HLI Score",
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("5 knots")
 
 
 
@@ -687,11 +709,12 @@ plotKidney5 <- ggplot(rms:::Predict(coxspline5Kidney, HLIScore=seq(1, 20),
 
 plotKidney4 <- ggplot(rms:::Predict(coxspline4Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("4 knots")
+                                    fun=exp),
+                      xlab= "HLI Score",
+                      ylab="HR",
+                      adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("4 knots")
 
 
 
@@ -701,11 +724,12 @@ plotKidney4 <- ggplot(rms:::Predict(coxspline4Kidney, HLIScore=seq(1, 20),
 
 plotKidney <- ggplot(rms:::Predict(coxKidney, HLIScore=seq(1, 20),
                                    ref.zero = TRUE,
-                                  fun=exp),
-                      xlab= "HLI Score",
-                    ylab="HR",
-                   adj.subtitle = FALSE) + 
-  ggtitle("Linear")
+                                   fun=exp),
+                        xlab= "HLI Score",
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+            geom_hline(yintercept=1, linetype="dashed") +
+            ggtitle("Linear")
 
 
 
