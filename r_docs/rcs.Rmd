@@ -1,13 +1,14 @@
 ---
-title: "Adjusted flexible models"
-subtitle: "[article title]Healthy Lifestyle Index and Incidence of Common Cancers in NOWAC Modeled with Restricted Cubic Splines (RCS)"
+title: "Additional File 3"
+subtitle: "Demonstrating model fit of associations between the HLI modeled as a nonlinear term and incidences of common cancers in NOWAC"
 
-author: "Sairah L.F. Chen"
-date: "08/07/2020"
+#author: "Sairah L.F. Chen"
+#date: "08/07/2020"
 output: pdf_document
 
 
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -21,13 +22,8 @@ library(cowplot)
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
 
-This supplementary document provides information on the use of RCS to model nonlinear associations between the HLI score and incidence of common cancers. 
+This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI modeled as a nonlinear term and incidences of common cancers.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modeled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
 
-
-## Best fit models
-
-
-<span style="color:gray">Non-linear association of HLI score and risk for common cancers. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each cancer model, and five knots for the lung cancer model, positioned at boundaries and percentiles. </span>
 
 ```{r, setup datadist, include=FALSE}
 ddist <- datadist(casesIncluded)
@@ -35,7 +31,7 @@ options(datadist="ddist")
 ddist$limits["Adjust to", "HLIScore"] <- 5
 ```
 
-```{r best fit plots , echo=FALSE, warning=FALSE}
+```{r best fit plots , include=FALSE}
 
 
 # breast, 3 knots
@@ -77,24 +73,21 @@ plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20
 
 plotColorectal3
 
-#lung, 5 knots
 
+# lung, 3 knots
 
-coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
-                        education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
-plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
-                                    ref.zero = TRUE,
-                                    fun=exp),
-                                    xlab= "HLI Score",
-                                    ylab="HR",
-                                    adj.subtitle = FALSE) + 
+plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
+                                  ref.zero = TRUE,
+                                  fun=exp),
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
-              ggtitle("Lung cancer")
+              ggtitle("3 knots")
 
-plotLung5
-
-
+plotLung3
 
 # endometrial, 3 knots
 coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
@@ -192,7 +185,7 @@ plotKidney3
 
 flexibleBestFit <- plot_grid(plotBreast3,
              plotColorectal3, 
-             plotLung5,
+             plotLung3,
              plotEndometrial3,
              plotOvarian3,
              plotPancreatic3,
@@ -201,12 +194,6 @@ flexibleBestFit <- plot_grid(plotBreast3,
 flexibleBestFit
 
 
-
-```
-```{r, include=FALSE}
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/flexible_bestfit.png")
-flexibleBestFit
-dev.off()
 
 ```
 
@@ -249,7 +236,7 @@ coxspline4Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIS
 
 coxColorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 coxspline4Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -370,15 +357,17 @@ colnames(AIC) <- c("Breast",
                    "Kidney")
 
 knitr::kable(as.data.frame(AIC), digits = 2,
-             caption = "AIC values for linear and flexible models (3-5 RCS knots) among common cancers")
+             caption = "AIC values for linear and nonlinear models (3-5 RCS knots) among common cancers")
 ```
 
 
-## Alternate spline models
+\newpage
 
-### Breast cancer
+All of the following plots use the HLI score of 5 as the reference. Hazard ratios (HRs) are present on the vertical axes and HLI scores are present on the horizontal axesShaded regions represent 95% confidence intervals.\
+\
+\
 
-<span style="color:gray">Figure 2. Associations between HLI and breast cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+Postmenopausal breast cancer
 
 ```{r breast knot plots, echo=FALSE}
 
@@ -428,18 +417,27 @@ plotBreast <- ggplot(rms:::Predict(coxBreast, HLIScore=seq(1, 20),
 
 
 
+```
+
+
+```{r, breast fig, echo=FALSE}
 breastSplineOptions <- ggarrange(plotBreast5,
                                plotBreast4,
                                plotBreast,
-                               ncol=2, nrow=2)
+                               ncol=2, nrow=2,
+                               labels=c("a","b","c"))
+
+#annotate_figure(breastSplineOptions, top= text_grob("Postmenopausal breast cancer", windowsFonts(Times=windowsFont("TT Times New Roman"))))
+
 
 breastSplineOptions
-
 ```
 
-### Colorectal cancer
+\newpage
 
-<span style="color:gray">Figure 3. Associations between HLI and colorectal cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+Colorectal cancer
+
+
 
 ```{r crc knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -492,34 +490,42 @@ plotColorectal <- ggplot(rms:::Predict(coxColorectal, HLIScore=seq(1, 20),
 colorectalSplineOptions <- ggarrange(plotColorectal5,
                                plotColorectal4,
                                plotColorectal,
-                               ncol=2, nrow=2)
+                               ncol=2, nrow=2,
+                               labels=c("a","b","c"))
 
 colorectalSplineOptions
 
 ```
 
-### Lung cancer
+\newpage
 
-<span style="color:gray">Figure 4. Associations between HLI and lung cancer incidence. Plots display the HLI modeled as an RCS variable with four and three knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+Lung cancer
+
+
 
 ```{r lung knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")
 
-# lung, 5 knots
+
+
+#lung, 5 knots
 
 
 
-plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
-                                  ref.zero = TRUE,
-                                  fun=exp),
-                          xlab= "HLI Score",
-                          ylab="HR",
-                          adj.subtitle = FALSE) + 
+
+plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
+                                    ref.zero = TRUE,
+                                    fun=exp),
+                                    xlab= "HLI Score",
+                                    ylab="HR",
+                                    adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
-              ggtitle("3 knots")
+              ggtitle("Lung cancer")
 
-#plotLung3
+
+
+
 # lung, 4 knots
 
 
@@ -553,15 +559,18 @@ plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
 lungSplineOptions <- ggarrange(plotLung3,
                                plotLung4,
                                plotLung,
-                               ncol=2, nrow=2)
+                               ncol=2, nrow=2,
+                               labels=c("a","b","c"))
 
 lungSplineOptions
 
 ```
 
-### Endometrial cancer
+\newpage
 
-<span style="color:gray">Figure 5. Associations between HLI and endometrial cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+Postmenopausal endometrial cancer
+
+
 
 ```{r endometrial knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -614,15 +623,86 @@ plotEndometrial <- ggplot(rms:::Predict(coxEndometrial, HLIScore=seq(1, 20),
 endometrialSplineOptions <- ggarrange(plotEndometrial5,
                                       plotEndometrial4,
                                       plotEndometrial,
-                               ncol=2, nrow=2)
+                                      ncol=2, nrow=2,
+                                      labels=c("a","b","c"))
 
 endometrialSplineOptions
 
 ```
 
-### Pancreatic cancer
 
-<span style="color:gray">Figure 6. Associations between HLI and pancreatic cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+
+
+\newpage
+
+Postmenopausal ovarian cancer
+
+
+
+```{r ovarian knot plots, echo=FALSE}
+ddist <- datadist(casesIncluded)
+options(datadist="ddist")
+
+# endo, 5 knots
+
+
+plotOvarian5 <- ggplot(rms:::Predict(coxspline5Ovarian, HLIScore=seq(1, 20),
+                                         ref.zero = TRUE,
+                                         fun=exp),
+                                  xlab= "HLI Score",
+                                  ylab="HR",
+                                  adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("5 knots")
+
+
+
+# endo, 4 knots
+
+
+
+plotOvarian4 <- ggplot(rms:::Predict(coxspline4Ovarian, HLIScore=seq(1, 20),
+                                         ref.zero = TRUE,
+                                         fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("4 knots")
+
+
+
+#endo, Linear
+
+
+
+plotOvarian <- ggplot(rms:::Predict(coxOvarian, HLIScore=seq(1, 20),
+                                        ref.zero = TRUE,
+                                        fun=exp),
+                                xlab= "HLI Score",
+                                ylab="HR",
+                                adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+    ggtitle("Linear")
+
+
+
+ovarianSplineOptions <- ggarrange(plotOvarian5,
+                                      plotOvarian4,
+                                      plotOvarian,
+                                      ncol=2, nrow=2,
+                                      labels=c("a","b","c"))
+
+ovarianSplineOptions
+
+```
+
+
+\newpage
+
+Pancreatic cancer
+
+
 
 ```{r pancreatic knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -675,15 +755,17 @@ plotPancreatic <- ggplot(rms:::Predict(coxPancreatic, HLIScore=seq(1, 20),
 pancreaticSplineOptions <- ggarrange(plotPancreatic5,
                                       plotPancreatic4,
                                       plotPancreatic,
-                               ncol=2, nrow=2)
+                                      ncol=2, nrow=2,
+                                     labels=c("a","b","c"))
 
 pancreaticSplineOptions
 
 ```
 
-### Kidney cancer
+\newpage
 
-<span style="color:gray">Figure 7. Associations between HLI and kidney cancer incidence. Plots display the HLI modeled as an RCS variable with five and four knots, and as an unaltered linear variable. Knots are set at percentile locations. Shaded regions visualise 95% CI. </span>
+Kidney cancer
+
 
 ```{r kidney knot plots, echo=FALSE}
 ddist <- datadist(casesIncluded)
@@ -734,9 +816,10 @@ plotKidney <- ggplot(rms:::Predict(coxKidney, HLIScore=seq(1, 20),
 
 
 kidneySplineOptions <- ggarrange(plotKidney5,
-                                      plotKidney4,
-                                      plotKidney,
-                               ncol=2, nrow=2)
+                                 plotKidney4,
+                                 plotKidney,
+                                 ncol=2, nrow=2,
+                                 labels=c("a","b","c"))
 
 kidneySplineOptions
 
@@ -744,12 +827,12 @@ kidneySplineOptions
 
 
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcsAdjustment.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcs.pdf")
 
 
 
 
-## Significance of the non-linear term
+
 
 ```{r p-linearity, include=FALSE}
 
