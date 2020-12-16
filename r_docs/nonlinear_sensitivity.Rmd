@@ -1,6 +1,6 @@
 ---
 title: "Additional File 5"
-subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle components from the Healthy Lifestyle Index"
+subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle components from the Healthy Lifestyle Index (HLI)"
 
 #author: "Sairah L.F. Chen"
 #date: "14 12 2020"
@@ -19,6 +19,9 @@ library(cowplot)
 
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
+
+This additional file displays results from sensitivity analyses conducted on associations with the HLI modeled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle components were excluded from the HLI, creating five reduced HLIs. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots. 
+
 
 ```{r preparing reduced HLI vars, include=FALSE}
 
@@ -57,12 +60,11 @@ options(datadist="ddist")
 ddist$limits["Adjust to", "HLIScore"] <- 5
 ```
 
-## Postmenopausal breast cancer 
-
-<span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and postmenopausal breast cancer incidence. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each  model </span>
+Figure 1. Postmenopausal breast cancer incidence and its association with HLIs excluding single lifestyle components. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
-```{r, echo=FALSE, warning=FALSE}
+
+```{r, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
 
 
 breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmoking, 3) + 
@@ -78,14 +80,13 @@ breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmok
 plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without smoking",
+                            xlab= "HLI Score excluding smoking",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Breast cancer without smoking") +
   theme(legend.position = "none")
 
-plotbreastNoSmoking
+
 
 
 breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) + 
@@ -101,14 +102,12 @@ breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) +
 plotbreastNoPA <- ggplot(rms:::Predict(breastNoPA, HLInoPA=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without PA",
+                            xlab= "HLI Score excluding physical activity",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Breast cancer without PA") +
   theme(legend.position = "none")
 
-plotbreastNoPA
 
 
 breastNoBMI <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoBMI, 3) + 
@@ -124,14 +123,13 @@ breastNoBMI <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoBMI, 3) 
 plotbreastNoBMI <- ggplot(rms:::Predict(breastNoBMI, HLInoBMI=seq(1, 16),
                                         ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without BMI",
+                            xlab= "HLI Score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Breast cancer without BMI") +
   theme(legend.position = "none")
 
-plotbreastNoBMI
+
 
 
 breastNoDiet <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoDiet, 3) + 
@@ -147,14 +145,13 @@ breastNoDiet <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoDiet, 3
 plotbreastNoDiet <- ggplot(rms:::Predict(breastNoDiet, HLInoDiet=seq(1, 16),
                                          ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without diet",
+                            xlab= "HLI Score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Breast cancer without diet") +
   theme(legend.position = "none")
 
-plotbreastNoDiet
+
 
 
 breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlcohol, 3) + 
@@ -170,21 +167,129 @@ breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlco
 plotbreastNoAlcohol <- ggplot(rms:::Predict(breastNoAlcohol, HLInoAlcohol=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without alcohol",
+                            xlab= "HLI Score excluding alcohol",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Breast cancer without alcohol") +
   theme(legend.position = "none")
 
-plotbreastNoAlcohol
+
+
+
+breast <- ggarrange(plotbreastNoSmoking,
+                    plotbreastNoPA,
+                    plotbreastNoDiet,
+                    plotbreastNoBMI,
+                    plotbreastNoAlcohol,
+                    ncol=2, nrow=3,
+                    labels=c("a","b","c","d","e"))
+breast
+
+```
+
+\newpage
+
+Figure 2. Colorectal cancer incidence and its association with HLIs excluding single lifestyle components. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+
+
+
+```{r, echo=FALSE, warning=FALSE}
+crcNoSmoking <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoSmoking, 3) + 
+                          education +
+                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotCrcNoSmoking <- ggplot(rms:::Predict(crcNoSmoking, HLInoSmoking=seq(1, 16),
+                                          ref.zero = TRUE,
+                                        fun=exp),
+                            xlab= "HLI Score excluding smoking",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+  ggtitle("Colorectal cancer excluding smoking") +
+  theme(legend.position = "none")
+
+plotLungNoSmoking
+
+crcNoPA <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoPA, 3) + 
+                          education +
+                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotCrcNoPA <- ggplot(rms:::Predict(crcNoPA, HLInoPA=seq(1, 16),
+                                     ref.zero = TRUE,
+                                        fun=exp),
+                            xlab= "HLI Score excluding PA",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+  ggtitle("Colorectal cancer excluding PA") +
+  theme(legend.position = "none")
+
+plotCrcNoPA
+
+crcNoBMI <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoBMI, 3) + 
+                          education +
+                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotCrcNoBMI <- ggplot(rms:::Predict(crcNoBMI, HLInoBMI=seq(1, 16),
+                                      ref.zero = TRUE,
+                                        fun=exp),
+                            xlab= "HLI Score excluding BMI",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+  ggtitle("Colorectal cancer excluding BMI") +
+  theme(legend.position = "none")
+
+plotCrcNoBMI
+
+
+crcNoDiet <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoDiet, 3) + 
+                          education +
+                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotCrcNoDiet <- ggplot(rms:::Predict(crcNoDiet, HLInoDiet=seq(1, 16),
+                                       ref.zero = TRUE,
+                                        fun=exp),
+                            xlab= "HLI Score excluding diet",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+  ggtitle("Colorectal cancer excluding diet") +
+  theme(legend.position = "none")
+
+plotCrcNoDiet
+
+
+crcNoAlcohol <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoAlcohol, 3) + 
+                          education +
+                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+
+plotCrcNoAlcohol <- ggplot(rms:::Predict(crcNoAlcohol, HLInoAlcohol=seq(1, 16),
+                                          ref.zero = TRUE,
+                                        fun=exp),
+                            xlab= "HLI Score excluding alcohol",
+                          ylab="HR",
+                      adj.subtitle = FALSE) + 
+    geom_hline(yintercept=1, linetype="dashed") +
+  ggtitle("Colorectal cancer excluding alcohol") +
+  theme(legend.position = "none")
+
+plotCrcNoAlcohol
+
+crc <- ggarrange(plotbreastNoSmoking,
+                 plotbreastNoPA,
+                 plotbreastNoDiet,
+                 plotbreastNoBMI,
+                 plotbreastNoAlcohol,
+                 ncol=2, nrow=3,
+                 labels=c("a","b","c","d","e"))
+crc
 
 
 ```
 
-## Lung cancer 
 
-<span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and lung cancer incidence. Shaded region visualises 95% CI. Restricted cubic splines fitted with five knots for each  model </span>
+Figure 3. Lung cancer incidence and its association with HLIs excluding single lifestyle components. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 ```{r, echo=FALSE, warning=FALSE}
 lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) + 
@@ -194,11 +299,11 @@ lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) 
 plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without smoking",
+                            xlab= "HLI Score excluding smoking",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Lung cancer without smoking") +
+  ggtitle("Lung cancer excluding smoking") +
   theme(legend.position = "none")
 
 plotLungNoSmoking
@@ -210,11 +315,11 @@ lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 3) +
 plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without PA",
+                            xlab= "HLI Score excluding PA",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Lung cancer without PA") +
+  ggtitle("Lung cancer excluding PA") +
   theme(legend.position = "none")
 
 plotLungNoPA
@@ -226,11 +331,11 @@ lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoBMI, 3) +
 plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without BMI",
+                            xlab= "HLI Score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Lung cancer without BMI") +
+  ggtitle("Lung cancer excluding BMI") +
   theme(legend.position = "none")
 
 plotLungNoBMI
@@ -243,11 +348,11 @@ lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoDiet, 3) +
 plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without diet",
+                            xlab= "HLI Score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Lung cancer without diet") +
+  ggtitle("Lung cancer excluding diet") +
   theme(legend.position = "none")
 
 plotLungNoDiet
@@ -260,11 +365,11 @@ lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 3) 
 plotLungNoAlcohol <- ggplot(rms:::Predict(lungNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without alcohol",
+                            xlab= "HLI Score excluding alcohol",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Lung cancer without alcohol") +
+  ggtitle("Lung cancer excluding alcohol") +
   theme(legend.position = "none")
 
 plotLungNoAlcohol
@@ -275,7 +380,6 @@ plotLungNoAlcohol
 
 ## Postmenopausal endometrial cancer 
 
-<span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and postmenopausal endometrial cancer incidence. Shaded region visualises 95% CI. Restricted cubic splines fitted with three knots for each  model </span>
 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -293,11 +397,11 @@ endometrialNoSmoking <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoSmoking <- ggplot(rms:::Predict(endometrialNoSmoking, HLInoSmoking=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without smoking",
+                            xlab= "HLI Score excluding smoking",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Endometrial cancer without smoking") +
+  ggtitle("Postmenopausal endometrial cancer excluding smoking") +
   theme(legend.position = "none")
 
 plotEndometrialNoSmoking
@@ -315,11 +419,11 @@ endometrialNoPA <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIn
 plotEndometrialNoPA <- ggplot(rms:::Predict(endometrialNoPA, HLInoPA=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without PA",
+                            xlab= "HLI Score excluding PA",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Endometrial cancer without PA") +
+  ggtitle("Postmenopausal endometrial cancer excluding PA") +
   theme(legend.position = "none")
 
 plotEndometrialNoPA
@@ -337,11 +441,11 @@ endometrialNoBMI <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLI
 plotEndometrialNoBMI <- ggplot(rms:::Predict(endometrialNoBMI, HLInoBMI=seq(1, 16),
                                              ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without BMI",
+                            xlab= "HLI Score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Endometrial cancer without BMI") +
+  ggtitle("Postmenopausal endometrial cancer excluding BMI") +
   theme(legend.position = "none")
 
 plotEndometrialNoBMI
@@ -359,11 +463,11 @@ endometrialNoDiet <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HL
 plotEndometrialNoDiet <- ggplot(rms:::Predict(endometrialNoDiet, HLInoDiet=seq(1, 16),
                                               ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without diet",
+                            xlab= "HLI Score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Endometrial cancer without diet") +
+  ggtitle("Postmenopausal endometrial cancer excluding diet") +
   theme(legend.position = "none")
 
 plotEndometrialNoDiet
@@ -381,11 +485,11 @@ endometrialNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoAlcohol <- ggplot(rms:::Predict(endometrialNoAlcohol, HLInoAlcohol=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score without alcohol",
+                            xlab= "HLI Score excluding alcohol",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
-  ggtitle("Endometrial cancer without alcohol") +
+  ggtitle("Postmenopausal endometrial cancer excluding alcohol") +
   theme(legend.position = "none")
 
 plotEndometrialNoAlcohol
