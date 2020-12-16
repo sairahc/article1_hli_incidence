@@ -3,9 +3,12 @@ title: "Grid plot of best fit flexible models"
 subtitle: "Association between HLI and common cancer incidence in NOWAC"
 author: "Sairah L.F. Chen"
 date: "11/12/2020"
+output: "pdf_document" 
+
+
 
 # Do not knit
-# document is for generating an image to be published in the main article
+# RUN THIS TO RENDER: markdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/flexible_bestfit_plot.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_2.pdf")
 ---
 
 
@@ -20,11 +23,15 @@ library(cowplot)
 
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
-
-```{r best fit plots , echo=FALSE, warning=FALSE}
-
+```{r, setup datadist, include=FALSE}
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")
+ddist$limits["Adjust to", "HLIScore"] <- 5
+```
+
+
+
+```{r best fit plots , echo=FALSE, warning=FALSE}
 
 
 # breast, 3 knots
@@ -39,43 +46,42 @@ coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore
 
 
 
-plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20),
-                                        fun=exp),
+plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20), 
+                                    ref.zero = TRUE,
+                                    fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Breast cancer") +
-  theme(legend.position = "none")
-
-plotBreast3
+                            ylab="HR",
+                            adj.subtitle = FALSE) +
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("Breast cancer") +
+              theme(legend.position = "none")
 
 #crc, 3 knots
 
 coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20),
+                                        ref.zero = TRUE,
                                         fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                          adj.subtitle = FALSE) + 
-  ggtitle("Colorectal cancer")
-
-plotColorectal3
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Colorectal cancer")
 
 #lung, 5 knots
 
 
-coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + 
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + 
                         education, data=casesIncluded, x=TRUE, y=TRUE)
-plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
-                   fun=exp),
-       xlab= "HLI Score",
-     ylab="HR",
-     adj.subtitle = FALSE) + 
-  ggtitle("Lung cancer")
-
-plotLung5
-
+plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
+                                  ref.zero = TRUE,
+                                  fun=exp),
+                          xlab= "HLI Score",
+                          ylab="HR",
+                          adj.subtitle = FALSE) + 
+              geom_hline(yintercept=1, linetype="dashed") +
+              ggtitle("Lung cancer")
 
 # endometrial, 3 knots
 coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
@@ -87,13 +93,13 @@ coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rc
                           breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 20),
-                                    fun=exp),
+                                         ref.zero = TRUE,
+                                         fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Endometrial cancer")
-
-plotEndometrial3
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Endometrial cancer")
 
 
 # ovarian, 3 knots
@@ -106,54 +112,58 @@ coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLISco
                           breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
-                                    fun=exp),
+                                     ref.zero = TRUE,
+                                     fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Ovarian cancer")
-
-plotOvarian3 
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("Ovarian cancer")
 
 # pancreatic, 3 knots
 coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20),
-                                    fun=exp),
+                                        ref.zero = TRUE,
+                                        fun=exp),
                         xlab= "HLI Score",
-                      ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Pancreatic cancer")
-
-plotPancreatic3
+                        ylab="HR",
+                        adj.subtitle = FALSE) + 
+                    geom_hline(yintercept=1, linetype="dashed") +
+                    ggtitle("Pancreatic cancer")
 
 # kidney, 3 knots
 
 coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidney3 <- ggplot(rms:::Predict(coxspline3Kidney, HLIScore=seq(1, 20),
-                                        fun=exp),
+                                    ref.zero = TRUE,
+                                    fun=exp),
                             xlab= "HLI Score",
-                          ylab="HR",
-                      adj.subtitle = FALSE) + 
-  ggtitle("Kidney cancer")
+                            ylab="HR",
+                            adj.subtitle = FALSE) + 
+                geom_hline(yintercept=1, linetype="dashed") +
+                ggtitle("Kidney cancer")
 
-plotKidney3
 
-
-flexiblePlot <- plot_grid(plotBreast3, #need to label with a,b,c etc
+plot <- plot_grid(plotBreast3, #need to label with a,b,c etc
              plotColorectal3, 
-             plotLung5,
+             plotLung3,
              plotEndometrial3,
              plotOvarian3,
              plotPancreatic3,
              plotKidney3,
-             ncol=3, nrow=3) 
+             ncol=3, nrow=3,
+             labels = c("a","b","c","d","e","f","g")) 
+
+
+
 # save to png
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/flexible_bestfit_plot.png", width= 1600, height = 1600)
-print(flexiblePlot)
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_2.png", width= 1000, height = 1000)
+print(plot)
 dev.off()
 
-flexiblePlot
+#flexiblePlot
 
 ```
 

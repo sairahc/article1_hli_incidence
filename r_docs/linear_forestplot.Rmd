@@ -15,6 +15,7 @@ library(ggplot2)
 
 
 
+
 ```{r forest plot ggplot, include=FALSE}
 label <- c("Postmenopausal breast", 
            "Colorectal",
@@ -52,14 +53,14 @@ fp_labels <- fp + geom_text(size=9, aes(y=labpos, label=labels, hjust=0))
 fp_with_labels <- fp_labels+ylim(c(0.82,1.10))
 
 # save to png
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/forest_plot.png", width=1600, height=1200)
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_1.png", width=1600, height=1200)
 fp_with_labels
 dev.off()
 
 #save to pdf
-pdf("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/forest_plot.pdf", width=20, height=20)
-print(fp_with_labels)
-dev.off()
+#pdf("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/forest_plot.pdf", width=20, height=20)
+#print(fp_with_labels)
+#dev.off()
 
 
 ```
