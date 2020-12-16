@@ -1,7 +1,9 @@
 ---
-title: "sensitivity_analysis_nonlinear"
-author: "Sairah L.F. Chen"
-date: "14 12 2020"
+title: "Additional File 5"
+subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle components from the Healthy Lifestyle Index"
+
+#author: "Sairah L.F. Chen"
+#date: "14 12 2020"
 output: pdf_document
 ---
 
@@ -185,7 +187,7 @@ plotbreastNoAlcohol
 <span style="color:gray"> Nonlinear associations of HLI score excluding each lifestyle component one-by-one and lung cancer incidence. Shaded region visualises 95% CI. Restricted cubic splines fitted with five knots for each  model </span>
 
 ```{r, echo=FALSE, warning=FALSE}
-lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 5) + 
+lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) + 
                           education +
                          smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -201,7 +203,7 @@ plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16)
 
 plotLungNoSmoking
 
-lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 5) + 
+lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 3) + 
                           education +
                          physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -217,7 +219,7 @@ plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
 
 plotLungNoPA
 
-lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoBMI, 5) + 
+lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoBMI, 3) + 
                           education +
                          BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -234,7 +236,7 @@ plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
 plotLungNoBMI
 
 
-lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoDiet, 5) + 
+lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoDiet, 3) + 
                           education +
                          dietScore, data=casesIncluded, x=TRUE, y=TRUE)
 
@@ -251,7 +253,7 @@ plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
 plotLungNoDiet
 
 
-lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 5) + 
+lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 3) + 
                           education +
                          alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
 
