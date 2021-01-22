@@ -826,7 +826,7 @@ kidneySplineOptions
 ```
 
 
-```{r render, eval=FALSE}
+```{r render, eval=FALSE, include=FALSE}
 
 rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcs.pdf")
 

@@ -831,6 +831,9 @@ kidney
 ```
 
 
-```{r do not run, eval=FALSE }
+```{r do not run, eval=FALSE, include=FALSE }
 
 rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/nonlinear_sensitivity.pdf")
+
+```
+
