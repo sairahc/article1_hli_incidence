@@ -363,7 +363,7 @@ knitr::kable(as.data.frame(AIC), digits = 2,
 
 \newpage
 
-All of the following plots use the HLI score of 5 as the reference. Hazard ratios (HRs) are present on the vertical axes and HLI scores are present on the horizontal axesShaded regions represent 95% confidence intervals.\
+All of the following plots use the HLI score of 5 as the reference. Hazard ratios (HRs) are present on the vertical axes and HLI scores are present on the horizontal axes. Shaded regions represent 95% confidence intervals.\
 \
 \
 
@@ -826,10 +826,11 @@ kidneySplineOptions
 ```
 
 
+```{r render, eval=FALSE}
 
 rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcs.pdf")
 
-
+```
 
 
 
