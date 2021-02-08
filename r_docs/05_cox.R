@@ -50,6 +50,7 @@ multivariateBreastCox <- function(dataframe,score) {
   coxObject <- coxph(Surv(ageMenopause, ageExit, statusBreast) ~
                        score + 
                        education +
+                       height +
                        HRTStatus +
                        OCEverUse +
                        ageMenarche + 
@@ -74,14 +75,19 @@ completeCoxBreastCat <- multivariateBreastCox(casesIncluded,
 
 completeCoxCrudeColorectal <- coxph(Surv(ageEntry, ageExit, statusColorectal) ~ HLIScore, data = casesIncluded)
 
-completeCoxColorectal<- coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLIScore + education, data = casesIncluded)
+completeCoxColorectal<- coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                HLIScore + 
+                                education +
+                                height, 
+                              data = casesIncluded)
 
 
 
 # model with HLI as categorical
 completeCoxColorectalCat <- coxph(Surv(ageEntry, ageExit, statusColorectal)~
                               relevel(factor(HLI4), ref = "(10,15]") +
-                              education,
+                              education +
+                              height,
                               data = casesIncluded)
 
 
@@ -101,13 +107,17 @@ completeCoxColorectalCat <- coxph(Surv(ageEntry, ageExit, statusColorectal)~
 # HLI continuous
 completeCoxCrudeLung <- coxph(Surv(ageEntry, ageExit, statusLung) ~ HLIScore, data = casesIncluded)
 
-completeCoxLung<- coxph(Surv(ageEntry, ageExit, statusLung)~ HLIScore + education, data = casesIncluded)
+completeCoxLung<- coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                          HLIScore + 
+                          education +
+                          height, data = casesIncluded)
 
 
 # model with HLI as categorical
 completeCoxLungCat <- coxph(Surv(ageEntry, ageExit, statusLung)~
                               relevel(factor(HLI4), ref = "(10,15]") +
-                              education,
+                              education +
+                              height,
                             data=casesIncluded)
 
 
@@ -120,6 +130,7 @@ completeCoxCrudeEndometrial <- coxph(Surv(ageMenopause, ageExit, statusEndometri
 completeCoxEndometrial <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~
                           HLIscore + 
                           education +
+                          height +  
                           HRTStatus +
                           OCEverUse +
                           ageMenarche + 
@@ -131,6 +142,7 @@ completeCoxEndometrial <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~
 completeCoxEndometrialCat <- coxph(Surv(ageMenopause, ageExit, statusEndometrial) ~ 
                                  relevel(factor(HLI4), ref = "(10,15]") +
                                  education +
+                                 height +   
                                  HRTStatus +
                                  OCEverUse +
                                  ageMenarche + 
@@ -142,6 +154,7 @@ completeCoxEndometrialCat <- coxph(Surv(ageMenopause, ageExit, statusEndometrial
 completeCoxOvarian <- coxph(Surv(ageMenopause, ageExit, statusOvarian) ~ 
                               HLIScore +
                               education +
+                              height +
                               HRTStatus +
                               OCEverUse +
                               ageMenarche + 
@@ -153,6 +166,7 @@ completeCoxOvarian <- coxph(Surv(ageMenopause, ageExit, statusOvarian) ~
 completeCoxOvarianCat <- coxph(Surv(ageMenopause, ageExit, statusOvarian) ~ 
                               relevel(factor(HLI4), ref = "(10,15]") +
                               education +
+                              height +  
                               HRTStatus +
                               OCEverUse +
                               ageMenarche + 
@@ -164,27 +178,34 @@ completeCoxOvarianCat <- coxph(Surv(ageMenopause, ageExit, statusOvarian) ~
 
 completeCoxCrudePancreatic <- coxph(Surv(ageEntry, ageExit, statusPancreatic) ~ HLIScore, data = casesIncluded)
 
-completeCoxPancreatic<- coxph(Surv(ageEntry, ageExit, statusPancreatic)~ HLIScore + 
-                                education, data = casesIncluded)
+completeCoxPancreatic<- coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
+                                HLIScore + 
+                                education +
+                                height, data = casesIncluded)
 
 
 # model with HLI as categorical
 completeCoxPancreaticCat <- coxph(Surv(ageEntry, ageExit, statusPancreatic)~
                               relevel(factor(HLI4), ref = "(10,15]") +
-                              education,
+                              education +
+                                height,
                               data = casesIncluded)
 
 # kidney cancer ----
 
 completeCoxCrudeKidney <- coxph(Surv(ageEntry, ageExit, statusKidney) ~ HLIScore, data = casesIncluded)
 
-completeCoxKidney<- coxph(Surv(ageEntry, ageExit, statusKidney)~ HLIScore + education, data = casesIncluded)
+completeCoxKidney<- coxph(Surv(ageEntry, ageExit, statusKidney)~ 
+                            HLIScore + 
+                            education +
+                            height, data = casesIncluded)
 
 
 # model with HLI as categorical
 completeCoxKidneyCat <- coxph(Surv(ageEntry, ageExit, statusKidney)~
                                     relevel(factor(HLI4), ref = "(10,15]") +
-                                    education,
+                                    education +
+                                height,
                                   data = casesIncluded)
 
 
@@ -201,6 +222,7 @@ test.ph.kidney <- cox.zph(completeCoxKidney)
 
 # ---------------------------------------------------------------
 # testing individual HLI components with breast cancer incidence
+    # the following block of analysis is not used in the publication
 
 smokingBreast <- coxph(Surv(ageMenopause, ageExit, statusBreast)~
                        smokingScore +
@@ -292,6 +314,7 @@ breast.pool <- with(data=imputedMergedMids,
                     exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                 HLIScore + 
                                 education +
+                                height +
                                 HRTStatus +
                                 OCEverUse +
                                 parityCat +
@@ -307,14 +330,20 @@ breast.pool.HR <- extractHRwithCIs(breast.pool)
 
 
 crc.pool <- with(data=imputedMergedMids, 
-             exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLIScore + education)) %>%
+             exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                         HLIScore + 
+                         education +
+                         height)) %>%
   pool() %>%
   summary()
 
 crc.pool.HR <- extractHRwithCIs(crc.pool)
 
 lung.pool <- with(data=imputedMergedMids, 
-                  exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLIScore + education)) %>%
+                  exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                              HLIScore + 
+                              education +
+                              height)) %>%
   pool() %>%
   summary()
 
@@ -327,6 +356,7 @@ endometrial.pool <- with(data=imputedMergedMids,
                     exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                 HLIScore + 
                                 education +
+                                height +
                                 HRTStatus +
                                 OCEverUse +
                                 parityCat +
@@ -342,6 +372,7 @@ ovarian.pool <- with(data=imputedMergedMids,
                          exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                      HLIScore + 
                                      education +
+                                     height +
                                      HRTStatus +
                                      OCEverUse +
                                      parityCat +
@@ -355,7 +386,10 @@ ovarian.pool.HR <- extractHRwithCIs(ovarian.pool)
 
 
 kidney.pool <- with(data=imputedMergedMids, 
-                 exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLIScore + education)) %>%
+                 exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
+                             HLIScore + 
+                             education +
+                             height)) %>%
   pool() %>%
   summary()
 
@@ -364,7 +398,8 @@ kidney.pool.HR <- extractHRwithCIs(kidney.pool)
 pancreatic.pool <- with(data=imputedMergedMids, 
                     exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
                                 HLIScore + 
-                                education)) %>%
+                                education +
+                                height)) %>%
   pool() %>%
   summary()
 
@@ -376,7 +411,8 @@ pancreatic.pool.HR <- extractHRwithCIs(pancreatic.pool)
 lungCatHLI.pool <- with(data=imputedMergedMids,
                    exp = coxph(Surv(ageEntry, ageExit, statusLung) ~ 
                                relevel(factor(HLI4), ref= "(10,15]") +   
-                               education)) %>%
+                               education +
+                              height)) %>%
   pool() %>%
   summary()
 
@@ -386,7 +422,8 @@ lungCatHLI.pool.HR <- extractHRwithCIs(lungCatHLI.pool)
 crcCatHLI.pool <- with(data=imputedMergedMids,
                         exp = coxph(Surv(ageEntry, ageExit, statusColorectal) ~ 
                                       relevel(factor(HLI4), ref= "(10,15]") +   
-                                      education)) %>%
+                                      education +
+                                      height)) %>%
   pool() %>%
   summary()
 
@@ -396,6 +433,7 @@ breastCatHLI.pool <- with(data=imputedMergedMids,
                         exp = coxph(Surv(ageMenopause, ageExit, statusBreast) ~ 
                                       relevel(factor(HLI4), ref= "(10,15]") +   
                                       education+
+                                      height +
                                       HRTStatus +
                                       OCEverUse +
                                       parityCat +
@@ -411,6 +449,7 @@ endometrialCatHLI.pool <- with(data=imputedMergedMids,
                          exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                      relevel(factor(HLI4), ref= "(10,15]") + 
                                      education +
+                                     height +
                                      HRTStatus +
                                      OCEverUse +
                                      parityCat +
@@ -425,6 +464,7 @@ ovarianCatHLI.pool <- with(data=imputedMergedMids,
                                exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                            relevel(factor(HLI4), ref= "(10,15]") + 
                                            education +
+                                           height +
                                            HRTStatus +
                                            OCEverUse +
                                            parityCat +
@@ -439,7 +479,8 @@ ovarianCatHLI.pool.HR <- extractHRwithCIs(ovarianCatHLI.pool)
 pancreaticCatHLI.pool <- with(data=imputedMergedMids, 
                                exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
                                            relevel(factor(HLI4), ref= "(10,15]") + 
-                                           education)) %>%
+                                           education +
+                                           height )) %>%
   pool() %>%
   summary()
 
@@ -449,7 +490,8 @@ pancreaticCatHLI.pool.HR <- extractHRwithCIs(pancreaticCatHLI.pool)
 kidneyCatHLI.pool <- with(data=imputedMergedMids, 
                     exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
                                 relevel(factor(HLI4), ref= "(10,15]") + 
-                                education)) %>%
+                                education +
+                                height)) %>%
   pool() %>%
   summary()
 
@@ -467,6 +509,7 @@ breastNoDiet.pool <- with(data=imputedMergedMids,
                           exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                       HLInoDiet + 
                                       education +
+                                      height +
                                       HRTStatus +
                                       OCEverUse +
                                       parityCat +
@@ -479,14 +522,21 @@ breastNoDiet.pool.HR <- extractHRwithCIs(breastNoDiet.pool)
 
 
 crcNoDiet.pool <- with(data=imputedMergedMids, 
-                       exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLInoDiet + education)) %>%
+                       exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                   HLInoDiet + 
+                                   education +
+                                   height
+                                   )) %>%
   pool() %>%
   summary()
 
 crcNoDiet.pool.HR <- extractHRwithCIs(crcNoDiet.pool)
 
 lungNoDiet.pool <- with(data=imputedMergedMids, 
-                        exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLInoDiet + education)) %>%
+                        exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                                    HLInoDiet + 
+                                    education +
+                                    height)) %>%
   pool() %>%
   summary()
 
@@ -497,6 +547,7 @@ endometrialNoDiet.pool <- with(data=imputedMergedMids,
                           exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                       HLInoDiet + 
                                       education +
+                                      height +
                                       HRTStatus +
                                       OCEverUse +
                                       parityCat +
@@ -510,6 +561,7 @@ ovarianNoDiet.pool <- with(data=imputedMergedMids,
                                exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                            HLInoDiet + 
                                            education +
+                                           height +
                                            HRTStatus +
                                            OCEverUse +
                                            parityCat +
@@ -523,7 +575,8 @@ ovarianNoDiet.pool.HR <- extractHRwithCIs(ovarianNoDiet.pool)
 pancreaticNoDiet.pool <- with(data=imputedMergedMids, 
                                exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
                                            HLInoDiet + 
-                                           education)) %>%
+                                           education +
+                                           height)) %>%
   pool()%>%
   summary()
 pancreaticNoDiet.pool.HR <- extractHRwithCIs(pancreaticNoDiet.pool)
@@ -531,7 +584,8 @@ pancreaticNoDiet.pool.HR <- extractHRwithCIs(pancreaticNoDiet.pool)
 kidneyNoDiet.pool <- with(data=imputedMergedMids, 
                               exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
                                           HLInoDiet + 
-                                          education)) %>%
+                                          education +
+                                          height)) %>%
   pool()%>%
   summary()
 kidneyNoDiet.pool.HR <- extractHRwithCIs(kidneyNoDiet.pool)
@@ -546,6 +600,7 @@ breastNoSmoking.pool <- with(data=imputedMergedMids,
                              exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                          HLInoSmoking + 
                                          education +
+                                         height +
                                          HRTStatus +
                                          OCEverUse +
                                          parityCat +
@@ -558,7 +613,10 @@ breastNoSmoking.pool.HR <- extractHRwithCIs(breastNoSmoking.pool)
 
 
 crcNoSmoking.pool <- with(data=imputedMergedMids, 
-                          exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLInoSmoking + education)) %>%
+                          exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                      LInoSmoking + 
+                                      education +
+                                      height)) %>%
   pool() %>%
   summary()
 
@@ -567,7 +625,10 @@ crcNoSmoking.pool.HR <- extractHRwithCIs(crcNoSmoking.pool)
 
 
 lungNoSmoking.pool <- with(data=imputedMergedMids, 
-                           exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLInoSmoking + education)) %>%
+                           exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                                       HLInoSmoking + 
+                                       education +
+                                       height)) %>%
   pool() %>%
   summary()
 
@@ -577,6 +638,7 @@ endometrialNoSmoking.pool <- with(data=imputedMergedMids,
                                exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                            HLInoSmoking + 
                                            education +
+                                           height +
                                            HRTStatus +
                                            OCEverUse +
                                            parityCat +
@@ -591,6 +653,7 @@ ovarianNoSmoking.pool <- with(data=imputedMergedMids,
                                   exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                               HLInoSmoking + 
                                               education +
+                                              height +
                                               HRTStatus +
                                               OCEverUse +
                                               parityCat +
@@ -601,14 +664,19 @@ ovarianNoSmoking.pool <- with(data=imputedMergedMids,
 ovarianNoSmoking.pool.HR <- extractHRwithCIs(ovarianNoSmoking.pool)
 
 pancreaticNoSmoking.pool <- with(data=imputedMergedMids, 
-                           exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ HLInoSmoking + education)) %>%
+                           exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
+                                       HLInoSmoking + 
+                                       education +
+                                       height)) %>%
   pool() %>%
   summary()
 
 pancreaticNoSmoking.pool.HR <- extractHRwithCIs(pancreaticNoSmoking.pool)
 
 kidneyNoSmoking.pool <- with(data=imputedMergedMids, 
-                                 exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLInoSmoking + education)) %>%
+                                 exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLInoSmoking + 
+                                             education +
+                                             height)) %>%
   pool() %>%
   summary()
 
@@ -621,6 +689,7 @@ breastNoBMI.pool <- with(data=imputedMergedMids,
                          exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                      HLInoBMI + 
                                      education +
+                                     height +
                                      HRTStatus +
                                      OCEverUse +
                                      parityCat +
@@ -633,7 +702,10 @@ breastNoBMI.pool.HR <- extractHRwithCIs(breastNoBMI.pool)
 
 
 crcNoBMI.pool <- with(data=imputedMergedMids, 
-                          exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLInoBMI + education)) %>%
+                          exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                      HLInoBMI + 
+                                      education +
+                                      height)) %>%
   pool() %>%
   summary()
 
@@ -642,7 +714,10 @@ crcNoBMI.pool.HR <- extractHRwithCIs(crcNoBMI.pool)
 
 
 lungNoBMI.pool <- with(data=imputedMergedMids, 
-                       exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLInoBMI + education)) %>%
+                       exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                                   HLInoBMI + 
+                                   education +
+                                   height)) %>%
   pool() %>%
   summary()
 
@@ -653,6 +728,7 @@ endometrialNoBMI.pool <- with(data=imputedMergedMids,
                                   exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                               HLInoBMI + 
                                               education +
+                                              height +
                                               HRTStatus +
                                               OCEverUse +
                                               parityCat +
@@ -667,6 +743,7 @@ ovarianNoBMI.pool <- with(data=imputedMergedMids,
                               exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                           HLInoBMI + 
                                           education +
+                                          height +
                                           HRTStatus +
                                           OCEverUse +
                                           parityCat +
@@ -677,14 +754,20 @@ ovarianNoBMI.pool <- with(data=imputedMergedMids,
 ovarianNoBMI.pool.HR <- extractHRwithCIs(ovarianNoBMI.pool)
 
 pancreaticNoBMI.pool <- with(data=imputedMergedMids, 
-                       exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ HLInoBMI + education)) %>%
+                       exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
+                                   HLInoBMI + 
+                                   education +
+                                   height)) %>%
   pool() %>%
   summary()
 
 pancreaticNoBMI.pool.HR <- extractHRwithCIs(pancreaticNoBMI.pool)
 
 kidneyNoBMI.pool <- with(data=imputedMergedMids, 
-                             exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLInoBMI + education)) %>%
+                             exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
+                                         HLInoBMI + 
+                                         education +
+                                         height)) %>%
   pool() %>%
   summary()
 
@@ -696,6 +779,7 @@ breastNoPA.pool <- with(data=imputedMergedMids,
                         exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                     HLInoPA + 
                                     education +
+                                    height +
                                     HRTStatus +
                                     OCEverUse +
                                     parityCat +
@@ -707,7 +791,10 @@ breastNoPA.pool <- with(data=imputedMergedMids,
 breastNoPA.pool.HR <- extractHRwithCIs(breastNoPA.pool)
 
 crcNoPA.pool <- with(data=imputedMergedMids, 
-                      exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLInoPA + education)) %>%
+                      exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                  HLInoPA + 
+                                  education +
+                                  height)) %>%
   pool() %>%
   summary()
 
@@ -715,7 +802,10 @@ crcNoPA.pool.HR <- extractHRwithCIs(crcNoPA.pool)
 
 
 lungNoPA.pool <- with(data=imputedMergedMids, 
-                      exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLInoPA + education)) %>%
+                      exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                                  HLInoPA + 
+                                  education +
+                                  height)) %>%
   pool() %>%
   summary()
 lungNoPA.pool.HR <- extractHRwithCIs(lungNoPA.pool)
@@ -725,6 +815,7 @@ endometrialNoPA.pool <- with(data=imputedMergedMids,
                               exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                           HLInoPA + 
                                           education +
+                                          height +
                                           HRTStatus +
                                           OCEverUse +
                                           parityCat +
@@ -738,6 +829,7 @@ ovarianNoPA.pool <- with(data=imputedMergedMids,
                              exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                          HLInoPA + 
                                          education +
+                                         height +
                                          HRTStatus +
                                          OCEverUse +
                                          parityCat +
@@ -748,14 +840,20 @@ ovarianNoPA.pool <- with(data=imputedMergedMids,
 ovarianNoPA.pool.HR <- extractHRwithCIs(ovarianNoPA.pool)
 
 pancreaticNoPA.pool <- with(data=imputedMergedMids, 
-                      exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ HLInoPA + education)) %>%
+                      exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
+                                  HLInoPA + 
+                                  education +
+                                  height)) %>%
   pool() %>%
   summary()
 pancreaticNoPA.pool.HR <- extractHRwithCIs(pancreaticNoPA.pool)
 
 
 kidneyNoPA.pool <- with(data=imputedMergedMids, 
-                      exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLInoPA + education)) %>%
+                      exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
+                                  HLInoPA + 
+                                  education +
+                                  height)) %>%
   pool() %>%
   summary()
 kidneyNoPA.pool.HR <- extractHRwithCIs(kidneyNoPA.pool)
@@ -767,6 +865,7 @@ breastNoAlcohol.pool <- with(data=imputedMergedMids,
                              exp=coxph(Surv(ageMenopause, ageExit, statusBreast)~ 
                                          HLInoAlcohol + 
                                          education +
+                                         height +
                                          HRTStatus +
                                          OCEverUse +
                                          parityCat +
@@ -778,14 +877,20 @@ breastNoAlcohol.pool <- with(data=imputedMergedMids,
 breastNoAlcohol.pool.HR <- extractHRwithCIs(breastNoAlcohol.pool)
 
 crcNoAlcohol.pool <- with(data=imputedMergedMids, 
-                     exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLInoAlcohol + education)) %>%
+                     exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
+                                 HLInoAlcohol + 
+                                 education +
+                                 height)) %>%
   pool() %>%
   summary()
 
 crcNoAlcohol.pool.HR <- extractHRwithCIs(crcNoAlcohol.pool)
 
 lungNoAlcohol.pool <- with(data=imputedMergedMids, 
-                                 exp=coxph(Surv(ageEntry, ageExit, statusLung)~ HLInoAlcohol + education)) %>%
+                                 exp=coxph(Surv(ageEntry, ageExit, statusLung)~ 
+                                             HLInoAlcohol + 
+                                             education +
+                                             height)) %>%
   pool() %>%
   summary()
 lungNoAlcohol.pool.HR <- extractHRwithCIs(lungNoAlcohol.pool)
@@ -795,6 +900,7 @@ endometrialNoAlcohol.pool <- with(data=imputedMergedMids,
                              exp=coxph(Surv(ageMenopause, ageExit, statusEndometrial)~ 
                                          HLInoAlcohol + 
                                          education +
+                                         height +
                                          HRTStatus +
                                          OCEverUse +
                                          parityCat +
@@ -809,6 +915,7 @@ ovarianNoAlcohol.pool <- with(data=imputedMergedMids,
                                   exp=coxph(Surv(ageMenopause, ageExit, statusOvarian)~ 
                                               HLInoAlcohol + 
                                               education +
+                                              height +
                                               HRTStatus +
                                               OCEverUse +
                                               parityCat +
@@ -819,13 +926,19 @@ ovarianNoAlcohol.pool <- with(data=imputedMergedMids,
 ovarianNoAlcohol.pool.HR <- extractHRwithCIs(ovarianNoAlcohol.pool)
 
 pancreaticNoAlcohol.pool <- with(data=imputedMergedMids, 
-                           exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ HLInoAlcohol + education)) %>%
+                           exp=coxph(Surv(ageEntry, ageExit, statusPancreatic)~ 
+                                       HLInoAlcohol + 
+                                       education +
+                                       height)) %>%
   pool() %>%
   summary()
 pancreaticNoAlcohol.pool.HR <- extractHRwithCIs(pancreaticNoAlcohol.pool)
 
 kidneyNoAlcohol.pool <- with(data=imputedMergedMids, 
-                           exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ HLInoAlcohol + education)) %>%
+                           exp=coxph(Surv(ageEntry, ageExit, statusKidney)~ 
+                                       HLInoAlcohol + 
+                                       education +
+                                       height)) %>%
   pool() %>%
   summary()
 kidneyNoAlcohol.pool.HR <- extractHRwithCIs(kidneyNoAlcohol.pool)
@@ -847,6 +960,8 @@ lungBMI18.5 <- coxph(Surv(ageEntry, ageExit, statusLung)~ HLIScore + education, 
 colorectalBMI18.5 <- coxph(Surv(ageEntry, ageExit, statusColorectal)~ HLIScore + education, data= BMI18.5)
 
 endometrialBMI18.5 <- multivariateEndometrialCox(BMI18.5, BMI18.5$HLIScore)
+
+ovarianBMI18.5 <- multivariateEndometrialCox(BMI18.5, BMI18.5$HLIScore)
 
 pancreaticBMI18.5 <- coxph(Surv(ageEntry, ageExit, statusPancreatic) ~ HLIScore + education, data = BMI18.5)
 
