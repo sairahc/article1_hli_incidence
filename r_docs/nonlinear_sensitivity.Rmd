@@ -1,6 +1,6 @@
 ---
 title: "Additional File 5"
-subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle components from the Healthy Lifestyle Index (HLI)"
+subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle factors from the healthy lifestyle index (HLI) score"
 
 #author: "Sairah L.F. Chen"
 #date: "14 12 2020"
@@ -25,7 +25,7 @@ casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 
 
 
-This additional file displays results from sensitivity analyses conducted on associations with the HLI modeled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle components were excluded from the HLI, creating five reduced HLIs. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots. (COMMENT: reference HLI still needs to be set to 5 in plots)
+This additional file displays results from sensitivity analyses conducted on associations with the HLI modelled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle factors were excluded from the HLI score, creating five reduced models. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots. (COMMENT: reference HLI still needs to be set to 5 in plots)
 
 
 ```{r preparing reduced HLI vars, include=FALSE}
@@ -69,7 +69,7 @@ ddist$limits["Adjust to", "HLIScore"] <- 5
 
 \newpage
 
-Figure 1. Postmenopausal breast cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education, hormone replacement therapy status, oral contraceptive ever use, parity, age at menarche, breastfeeding, and family history of breast cancer in the first degree. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 1. Postmenopausal breast cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptives, parity, breastfeeding, using of hormone replacement therapy, and history of breast cacner n a first-degree relative. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -89,7 +89,7 @@ breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmok
 plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -111,7 +111,7 @@ breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) +
 plotbreastNoPA <- ggplot(rms:::Predict(breastNoPA, HLInoPA=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -176,7 +176,7 @@ breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlco
 plotbreastNoAlcohol <- ggplot(rms:::Predict(breastNoAlcohol, HLInoAlcohol=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -198,7 +198,7 @@ breast
 
 \newpage
 
-Figure 2. Colorectal cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 2. Colorectal cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -210,7 +210,7 @@ crcNoSmoking <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoSmoking
 plotCrcNoSmoking <- ggplot(rms:::Predict(crcNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -224,7 +224,7 @@ crcNoPA <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoPA, 3) +
 plotCrcNoPA <- ggplot(rms:::Predict(crcNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -270,7 +270,7 @@ crcNoAlcohol <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoAlcohol
 plotCrcNoAlcohol <- ggplot(rms:::Predict(crcNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -292,7 +292,7 @@ crc
 
 \newpage
 
-Figure 3. Lung cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 3. Lung cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 ```{r lung, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
 lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) + 
@@ -302,7 +302,7 @@ lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) 
 plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -316,7 +316,7 @@ lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 3) +
 plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -363,7 +363,7 @@ lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 3) 
 plotLungNoAlcohol <- ggplot(rms:::Predict(lungNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -386,7 +386,7 @@ lung
 
 \newpage
 
-Figure 4. Postmenopausal endometrial cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education, hormone replacement therapy status, oral contraceptive ever use, parity, age at menarche, and breastfeeding. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 4. Postmenopausal endometrial cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -405,7 +405,7 @@ endometrialNoSmoking <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoSmoking <- ggplot(rms:::Predict(endometrialNoSmoking, HLInoSmoking=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -426,7 +426,7 @@ endometrialNoPA <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIn
 plotEndometrialNoPA <- ggplot(rms:::Predict(endometrialNoPA, HLInoPA=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -489,7 +489,7 @@ endometrialNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoAlcohol <- ggplot(rms:::Predict(endometrialNoAlcohol, HLInoAlcohol=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -513,7 +513,7 @@ endometrial
 
 \newpage
 
-Figure 5. Postmenopausal ovarian cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education, hormone replacement therapy status, oral contraceptive ever use, parity, age at menarche, and breastfeeding.  The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 5. Postmenopausal ovarian cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy.  The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -533,7 +533,7 @@ ovarianNoSmoking <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoSm
 plotOvarianNoSmoking <- ggplot(rms:::Predict(ovarianNoSmoking, HLInoSmoking=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -554,7 +554,7 @@ ovarianNoPA <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoPA, 3) 
 plotOvarianNoPA <- ggplot(rms:::Predict(ovarianNoPA, HLInoPA=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -617,7 +617,7 @@ ovarianNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoAl
 plotOvarianNoAlcohol <- ggplot(rms:::Predict(ovarianNoAlcohol, HLInoAlcohol=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -642,7 +642,7 @@ ovarian
 \newpage
 
 
-Figure 6. Pancreatic cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 6. Pancreatic cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -654,7 +654,7 @@ pancreaticNoSmoking <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIno
 plotPancreaticNoSmoking <- ggplot(rms:::Predict(pancreaticNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -668,7 +668,7 @@ pancreaticNoPA <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoPA, 3
 plotPancreaticNoPA <- ggplot(rms:::Predict(pancreaticNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -714,7 +714,7 @@ pancreaticNoAlcohol <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIno
 plotPancreaticNoAlcohol <- ggplot(rms:::Predict(pancreaticNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -739,7 +739,7 @@ pancreatic
 \newpage
 
 
-Figure 7. Kidney cancer incidence and its association with HLIs excluding single lifestyle components. Models are adjusted for education. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 7. Kidney cancer incidence and its association with HLI score excluding single lifestyle components. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -751,7 +751,7 @@ kidneyNoSmoking <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoSmoking,
 plotKidneyNoSmoking <- ggplot(rms:::Predict(kidneyNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking",
+                            xlab= "HLI Score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -765,7 +765,7 @@ kidneyNoPA <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoPA, 3) +
 plotKidneyNoPA <- ggplot(rms:::Predict(kidneyNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding PA",
+                            xlab= "HLI Score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -811,7 +811,7 @@ kidneyNoAlcohol <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoAlcohol,
 plotKidneyNoAlcohol <- ggplot(rms:::Predict(kidneyNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol",
+                            xlab= "HLI Score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
