@@ -37,6 +37,7 @@ ddist$limits["Adjust to", "HLIScore"] <- 5
 # breast, 3 knots
 coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -58,7 +59,10 @@ plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20),
 
 #crc, 3 knots
 
-coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                              rcs(HLIScore, 3) + 
+                              education +
+                              height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
@@ -72,8 +76,10 @@ plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20
 #lung, 5 knots
 
 
-coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + 
-                        education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                        rcs(HLIScore, 3) + 
+                        education +
+                        height, data=casesIncluded, x=TRUE, y=TRUE)
 plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
                                   ref.zero = TRUE,
                                   fun=exp),
@@ -86,6 +92,7 @@ plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
 # endometrial, 3 knots
 coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -105,6 +112,7 @@ plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 
 # ovarian, 3 knots
 coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -121,7 +129,10 @@ plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
                 ggtitle("Ovarian cancer")
 
 # pancreatic, 3 knots
-coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                              rcs(HLIScore, 3) + 
+                              education +
+                              height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
@@ -134,7 +145,10 @@ plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20
 
 # kidney, 3 knots
 
-coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                          rcs(HLIScore, 3) + 
+                          education +
+                          height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidney3 <- ggplot(rms:::Predict(coxspline3Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
