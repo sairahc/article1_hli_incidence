@@ -62,14 +62,18 @@ casesIncluded$HLInoAlcohol <- casesIncluded$dietScore +
 ```{r, setup datadist, include=FALSE}
 ddist <- datadist(casesIncluded)
 options(datadist="ddist")
-ddist$limits["Adjust to", "HLIScore"] <- 5
+ddist$limits["Adjust to", "HLInoSmoking"] <- 5
+ddist$limits["Adjust to", "HLInoPA"] <- 5
+ddist$limits["Adjust to", "HLInoBMI"] <- 5
+ddist$limits["Adjust to", "HLInoDiet"] <- 5
+ddist$limits["Adjust to", "HLInoAlcohol"] <- 5
 
 ```
 
 
 \newpage
 
-Figure 1. Postmenopausal breast cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptives, parity, breastfeeding, using of hormone replacement therapy, and history of breast cacner n a first-degree relative. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure 1. Postmenopausal breast cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptives, parity, breastfeeding, using of hormone replacement therapy, and history of breast cancer n a first-degree relative. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -78,13 +82,14 @@ Figure 1. Postmenopausal breast cancer incidence and its association with HLI sc
 
 breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmoking, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
                           familyHistBC +
                           ageMenarche +
                           breastfeedingCat +
-                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+                          smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1, 16),
                                             ref.zero = TRUE,
@@ -100,6 +105,7 @@ plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1,
 
 breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -121,6 +127,7 @@ plotbreastNoPA <- ggplot(rms:::Predict(breastNoPA, HLInoPA=seq(1, 16),
 
 breastNoBMI <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoBMI, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -143,6 +150,7 @@ plotbreastNoBMI <- ggplot(rms:::Predict(breastNoBMI, HLInoBMI=seq(1, 16),
 
 breastNoDiet <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoDiet, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -165,6 +173,7 @@ plotbreastNoDiet <- ggplot(rms:::Predict(breastNoDiet, HLInoDiet=seq(1, 16),
 
 breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlcohol, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -196,6 +205,8 @@ breast
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
+
 \newpage
 
 Figure 2. Colorectal cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
@@ -203,9 +214,11 @@ Figure 2. Colorectal cancer incidence and its association with HLI score excludi
 
 
 ```{r colorectal, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
-crcNoSmoking <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoSmoking, 3) + 
-                          education +
-                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+crcNoSmoking <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                      rcs(HLInoSmoking, 3) + 
+                      education +
+                      height +
+                      smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotCrcNoSmoking <- ggplot(rms:::Predict(crcNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
@@ -217,9 +230,11 @@ plotCrcNoSmoking <- ggplot(rms:::Predict(crcNoSmoking, HLInoSmoking=seq(1, 16),
   theme(legend.position = "none")
 
 
-crcNoPA <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoPA, 3) + 
-                          education +
-                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+crcNoPA <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                 rcs(HLInoPA, 3) + 
+                 education +
+                 height +
+                 physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotCrcNoPA <- ggplot(rms:::Predict(crcNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
@@ -231,9 +246,11 @@ plotCrcNoPA <- ggplot(rms:::Predict(crcNoPA, HLInoPA=seq(1, 16),
   theme(legend.position = "none")
 
 
-crcNoBMI <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoBMI, 3) + 
-                          education +
-                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+crcNoBMI <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                  rcs(HLInoBMI, 3) + 
+                  education +
+                  height +
+                  BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotCrcNoBMI <- ggplot(rms:::Predict(crcNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
@@ -247,9 +264,11 @@ plotCrcNoBMI <- ggplot(rms:::Predict(crcNoBMI, HLInoBMI=seq(1, 16),
 
 
 
-crcNoDiet <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoDiet, 3) + 
-                          education +
-                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+crcNoDiet <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                   rcs(HLInoDiet, 3) + 
+                   education +
+                   height +
+                   dietScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotCrcNoDiet <- ggplot(rms:::Predict(crcNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
@@ -263,9 +282,11 @@ plotCrcNoDiet <- ggplot(rms:::Predict(crcNoDiet, HLInoDiet=seq(1, 16),
 
 
 
-crcNoAlcohol <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLInoAlcohol, 3) + 
-                          education +
-                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+crcNoAlcohol <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                      rcs(HLInoAlcohol, 3) + 
+                      education +
+                      height +
+                      alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotCrcNoAlcohol <- ggplot(rms:::Predict(crcNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
@@ -290,14 +311,18 @@ crc
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
+
 \newpage
 
 Figure 3. Lung cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 ```{r lung, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
-lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoSmoking, 3) + 
-                          education +
-                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                       rcs(HLInoSmoking, 3) + 
+                       education +
+                       height +
+                       smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
@@ -309,9 +334,11 @@ plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16)
   theme(legend.position = "none")
 
 
-lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoPA, 3) + 
-                          education +
-                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~
+                  rcs(HLInoPA, 3) + 
+                  education +
+                  height +
+                  physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
@@ -324,9 +351,11 @@ plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
 
 
 
-lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoBMI, 3) + 
-                          education +
-                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~
+                   rcs(HLInoBMI, 3) + 
+                   education +
+                   height +
+                   BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
@@ -340,9 +369,11 @@ plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
 
 
 
-lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoDiet, 3) + 
-                          education +
-                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                    rcs(HLInoDiet, 3) + 
+                    education +
+                    height +
+                    dietScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
@@ -356,9 +387,11 @@ plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
 
 
 
-lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLInoAlcohol, 3) + 
-                          education +
-                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                       rcs(HLInoAlcohol, 3) + 
+                       education +
+                       height +
+                       alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLungNoAlcohol <- ggplot(rms:::Predict(lungNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
@@ -384,6 +417,8 @@ lung
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
+
 \newpage
 
 Figure 4. Postmenopausal endometrial cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
@@ -395,6 +430,7 @@ Figure 4. Postmenopausal endometrial cancer incidence and its association with H
 
 endometrialNoSmoking <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLInoSmoking, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -416,6 +452,7 @@ plotEndometrialNoSmoking <- ggplot(rms:::Predict(endometrialNoSmoking, HLInoSmok
 
 endometrialNoPA <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLInoPA, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -437,6 +474,7 @@ plotEndometrialNoPA <- ggplot(rms:::Predict(endometrialNoPA, HLInoPA=seq(1, 16),
 
 endometrialNoBMI <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLInoBMI, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -458,6 +496,7 @@ plotEndometrialNoBMI <- ggplot(rms:::Predict(endometrialNoBMI, HLInoBMI=seq(1, 1
 
 endometrialNoDiet <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLInoDiet, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -479,6 +518,7 @@ plotEndometrialNoDiet <- ggplot(rms:::Predict(endometrialNoDiet, HLInoDiet=seq(1
 
 endometrialNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLInoAlcohol, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -511,6 +551,8 @@ endometrial
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
+
 \newpage
 
 Figure 5. Postmenopausal ovarian cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy.  The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
@@ -523,6 +565,7 @@ Figure 5. Postmenopausal ovarian cancer incidence and its association with HLI s
 
 ovarianNoSmoking <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoSmoking, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -544,6 +587,7 @@ plotOvarianNoSmoking <- ggplot(rms:::Predict(ovarianNoSmoking, HLInoSmoking=seq(
 
 ovarianNoPA <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoPA, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -565,6 +609,7 @@ plotOvarianNoPA <- ggplot(rms:::Predict(ovarianNoPA, HLInoPA=seq(1, 16),
 
 ovarianNoBMI <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoBMI, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -586,6 +631,7 @@ plotOvarianNoBMI <- ggplot(rms:::Predict(ovarianNoBMI, HLInoBMI=seq(1, 16),
 
 ovarianNoDiet <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoDiet, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -607,6 +653,7 @@ plotOvarianNoDiet <- ggplot(rms:::Predict(ovarianNoDiet, HLInoDiet=seq(1, 16),
 
 ovarianNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoAlcohol, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -639,6 +686,8 @@ ovarian
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
+
 \newpage
 
 
@@ -647,9 +696,11 @@ Figure 6. Pancreatic cancer incidence and its association with HLI score excludi
 
 
 ```{r pancreatic, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
-pancreaticNoSmoking <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoSmoking, 3) + 
-                          education +
-                         smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
+pancreaticNoSmoking <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                             rcs(HLInoSmoking, 3) + 
+                             education +
+                             height +
+                             smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreaticNoSmoking <- ggplot(rms:::Predict(pancreaticNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
@@ -661,9 +712,11 @@ plotPancreaticNoSmoking <- ggplot(rms:::Predict(pancreaticNoSmoking, HLInoSmokin
   theme(legend.position = "none")
 
 
-pancreaticNoPA <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoPA, 3) + 
-                          education +
-                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+pancreaticNoPA <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                        rcs(HLInoPA, 3) + 
+                        education +
+                        height+ 
+                        physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreaticNoPA <- ggplot(rms:::Predict(pancreaticNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
@@ -675,8 +728,10 @@ plotPancreaticNoPA <- ggplot(rms:::Predict(pancreaticNoPA, HLInoPA=seq(1, 16),
   theme(legend.position = "none")
 
 
-pancreaticNoBMI <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoBMI, 3) + 
+pancreaticNoBMI <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                         rcs(HLInoBMI, 3) + 
                           education +
+                         height +
                          BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreaticNoBMI <- ggplot(rms:::Predict(pancreaticNoBMI, HLInoBMI=seq(1, 16),
@@ -691,9 +746,11 @@ plotPancreaticNoBMI <- ggplot(rms:::Predict(pancreaticNoBMI, HLInoBMI=seq(1, 16)
 
 
 
-pancreaticNoDiet <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoDiet, 3) + 
+pancreaticNoDiet <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                          rcs(HLInoDiet, 3) + 
                           education +
-                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+                          height +
+                          dietScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreaticNoDiet <- ggplot(rms:::Predict(pancreaticNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
@@ -707,9 +764,11 @@ plotPancreaticNoDiet <- ggplot(rms:::Predict(pancreaticNoDiet, HLInoDiet=seq(1, 
 
 
 
-pancreaticNoAlcohol <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLInoAlcohol, 3) + 
-                          education +
-                         alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
+pancreaticNoAlcohol <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                             rcs(HLInoAlcohol, 3) + 
+                             education +
+                             height +
+                             alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreaticNoAlcohol <- ggplot(rms:::Predict(pancreaticNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
@@ -733,7 +792,7 @@ pancreatic
 
 ```
 
-
+Abbreviations: HR = hazard ration, BMI = body mass index
 
 
 \newpage
@@ -744,8 +803,10 @@ Figure 7. Kidney cancer incidence and its association with HLI score excluding s
 
 
 ```{r kidney, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
-kidneyNoSmoking <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoSmoking, 3) + 
-                          education +
+kidneyNoSmoking <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                         rcs(HLInoSmoking, 3) + 
+                         education +
+                         height +
                          smokingScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidneyNoSmoking <- ggplot(rms:::Predict(kidneyNoSmoking, HLInoSmoking=seq(1, 16),
@@ -758,9 +819,11 @@ plotKidneyNoSmoking <- ggplot(rms:::Predict(kidneyNoSmoking, HLInoSmoking=seq(1,
   theme(legend.position = "none")
 
 
-kidneyNoPA <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoPA, 3) + 
-                          education +
-                         physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
+kidneyNoPA <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                    rcs(HLInoPA, 3) + 
+                    education +
+                    height +
+                    physicalActivityScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidneyNoPA <- ggplot(rms:::Predict(kidneyNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
@@ -772,9 +835,11 @@ plotKidneyNoPA <- ggplot(rms:::Predict(kidneyNoPA, HLInoPA=seq(1, 16),
   theme(legend.position = "none")
 
 
-kidneyNoBMI <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoBMI, 3) + 
-                          education +
-                         BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
+kidneyNoBMI <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                     rcs(HLInoBMI, 3) + 
+                     education +
+                     height +
+                     BMIScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidneyNoBMI <- ggplot(rms:::Predict(kidneyNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
@@ -788,9 +853,11 @@ plotKidneyNoBMI <- ggplot(rms:::Predict(kidneyNoBMI, HLInoBMI=seq(1, 16),
 
 
 
-kidneyNoDiet <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoDiet, 3) + 
-                          education +
-                         dietScore, data=casesIncluded, x=TRUE, y=TRUE)
+kidneyNoDiet <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                      rcs(HLInoDiet, 3) + 
+                      education +
+                      height +
+                      dietScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidneyNoDiet <- ggplot(rms:::Predict(kidneyNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
@@ -804,8 +871,10 @@ plotKidneyNoDiet <- ggplot(rms:::Predict(kidneyNoDiet, HLInoDiet=seq(1, 16),
 
 
 
-kidneyNoAlcohol <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLInoAlcohol, 3) + 
-                          education +
+kidneyNoAlcohol <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                         rcs(HLInoAlcohol, 3) + 
+                         education +
+                         height +
                          alcoholScore, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidneyNoAlcohol <- ggplot(rms:::Predict(kidneyNoAlcohol, HLInoAlcohol=seq(1, 16),
@@ -830,10 +899,11 @@ kidney
 
 ```
 
+Abbreviations: HR = hazard ration, BMI = body mass index
 
 ```{r do not run, eval=FALSE, include=FALSE }
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/nonlinear_sensitivity.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/Additional_file_5.pdf")
 
 ```
 
