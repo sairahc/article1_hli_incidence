@@ -25,8 +25,8 @@ label <- c("Postmenopausal breast",
            "Pancreatic",
            "Kidney")
 estimate <- c(0.97,0.98,0.86,0.93,0.99,0.92,0.94)
-lower_ci <- c(0.96,0.97,0.85,0.91,0.96,0.89,0.90)
-upper_ci <- c(0.98,1.00,0.88,0.95,1.02,0.95,0.97)
+lower_ci <- c(0.96,0.96,0.84,0.91,0.96,0.89,0.91)
+upper_ci <- c(0.98,1.00,0.87,0.95,1.02,0.95,0.97)
 
 df <- data.frame(label, estimate, lower_ci, upper_ci)
 
