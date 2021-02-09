@@ -1,6 +1,6 @@
 ---
 title: "Additional File 3"
-subtitle: "Demonstrating model fit of associations between the HLI modeled as a nonlinear term and incidences of common cancers in NOWAC"
+subtitle: "Demonstrating model fit of associations between the healthy lifestyle index (HLI) score modelled as a nonlinear term and incidences of common cancer types in the Norwegian Women and Cancer Study"
 
 #author: "Sairah L.F. Chen"
 #date: "08/07/2020"
@@ -22,7 +22,7 @@ library(cowplot)
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
 
-This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI modeled as a nonlinear term and incidences of common cancers.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modeled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
+This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI score modelled as a nonlinear term and incidences of common cancer types.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modelled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
 
 
 ```{r, setup datadist, include=FALSE}
@@ -37,6 +37,7 @@ ddist$limits["Adjust to", "HLIScore"] <- 5
 # breast, 3 knots
 coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -49,7 +50,7 @@ coxspline3Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore
 plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20), 
                                     ref.zero = TRUE,
                                     fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) +
               geom_hline(yintercept=1, linetype="dashed") +
@@ -60,12 +61,15 @@ plotBreast3
 
 #crc, 3 knots
 
-coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                                rcs(HLIScore, 3) + 
+                                education +
+                                height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotColorectal3 <- ggplot(rms:::Predict(coxspline3Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -76,12 +80,15 @@ plotColorectal3
 
 # lung, 3 knots
 
-coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                          rcs(HLIScore, 3) + 
+                          education +
+                          height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
                                   ref.zero = TRUE,
                                   fun=exp),
-                          xlab= "HLI Score",
+                          xlab= "HLI score",
                           ylab="HR",
                           adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
@@ -90,8 +97,10 @@ plotLung3 <- ggplot(rms:::Predict(coxspline3Lung, HLIScore=seq(1, 20),
 plotLung3
 
 # endometrial, 3 knots
-coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 3) + 
+coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ 
+                          rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -101,7 +110,7 @@ coxspline3Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rc
 plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
                                          fun=exp),
-                        xlab= "HLI Score",
+                        xlab= "HLI score",
                         ylab="HR",
                         adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -113,6 +122,7 @@ plotEndometrial3
 # ovarian, 3 knots
 coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 3) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -122,7 +132,7 @@ coxspline3Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLISco
 plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
                                      ref.zero = TRUE,
                                      fun=exp),
-                        xlab= "HLI Score",
+                        xlab= "HLI score",
                         ylab="HR",
                         adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -131,12 +141,15 @@ plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
 plotOvarian3 
 
 # pancreatic, 3 knots
-coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                                rcs(HLIScore, 3) + 
+                                education +
+                                height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotPancreatic3 <- ggplot(rms:::Predict(coxspline3Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                        xlab= "HLI Score",
+                        xlab= "HLI score",
                         ylab="HR",
                         adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -146,12 +159,15 @@ plotPancreatic3
 
 # kidney, 3 knots
 
-coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 3) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline3Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                            rcs(HLIScore, 3) + 
+                            education +
+                            height, data=casesIncluded, x=TRUE, y=TRUE)
 
 plotKidney3 <- ggplot(rms:::Predict(coxspline3Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -205,6 +221,7 @@ flexibleBestFit
 
 coxspline5Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 5) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -214,6 +231,7 @@ coxspline5Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore
 
 coxspline4Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore, 4) + 
                           education +
+                          height +    
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -223,6 +241,7 @@ coxspline4Breast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLIScore
 
 coxBreast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ HLIScore + 
                    education +
+                   height +     
                    HRTStatus +
                    OCEverUse +
                    parityCat +
@@ -230,23 +249,42 @@ coxBreast <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ HLIScore +
                    ageMenarche +
                    breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline5Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                                rcs(HLIScore, 5) + 
+                                education +
+                                height , data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline4Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline4Colorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                                rcs(HLIScore, 4) + 
+                                education +
+                                height , data=casesIncluded, x=TRUE, y=TRUE)
 
-coxColorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxColorectal <- cph(Surv(ageEntry, ageExit, statusColorectal) ~ 
+                         HLIScore + 
+                         education +
+                         height, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                          rcs(HLIScore, 5) + 
+                          education +
+                          height , data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline4Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline4Lung <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                          rcs(HLIScore, 4) + 
+                          education +
+                          height, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxLung <- cph(Surv(ageEntry, ageExit, statusLung) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxLung <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
+                   HLIScore + 
+                   education +
+                   height, data=casesIncluded, x=TRUE, y=TRUE)
 
 
 
 
 coxspline5Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 5) + 
                           education +
+                          height +
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -255,6 +293,7 @@ coxspline5Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rc
 
 coxspline4Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIScore, 4) + 
                           education +
+                          height +          
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -265,6 +304,7 @@ coxspline4Endometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rc
 
 coxEndometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ HLIScore + 
                    education +
+                   height +       
                    HRTStatus +
                    OCEverUse +
                    parityCat +
@@ -272,6 +312,7 @@ coxEndometrial <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ HLIScore 
                    breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
 coxspline5Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 5) + 
                           education +
+                          height +   
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -280,6 +321,7 @@ coxspline5Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLISco
 
 coxspline4Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLIScore, 4) + 
                           education +
+                          height +     
                           HRTStatus +
                           OCEverUse +
                           parityCat +
@@ -290,6 +332,7 @@ coxspline4Ovarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLISco
 
 coxOvarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ HLIScore + 
                    education +
+                   height +      
                    HRTStatus +
                    OCEverUse +
                    parityCat +
@@ -297,19 +340,37 @@ coxOvarian <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ HLIScore +
                    breastfeedingCat, data=casesIncluded, x=TRUE, y=TRUE)
 
 
-coxspline5Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                                rcs(HLIScore, 5) + 
+                                education +
+                                height, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxspline4Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline4Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                                rcs(HLIScore, 4) + 
+                                education +
+                                height, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxPancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxPancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
+                         HLIScore + 
+                         education +
+                         height, data=casesIncluded, x=TRUE, y=TRUE)
 
 
-coxspline5Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 5) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline5Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                            rcs(HLIScore, 5) + 
+                            education +
+                            height, data=casesIncluded, x=TRUE, y=TRUE)
 
 
-coxspline4Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ rcs(HLIScore, 4) + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxspline4Kidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                            rcs(HLIScore, 4) + 
+                            education +
+                            height, data=casesIncluded, x=TRUE, y=TRUE)
 
-coxKidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ HLIScore + education, data=casesIncluded, x=TRUE, y=TRUE)
+coxKidney <- cph(Surv(ageEntry, ageExit, statusKidney) ~ 
+                     HLIScore + 
+                     education +
+                     height, data=casesIncluded, x=TRUE, y=TRUE)
 
 
 
@@ -348,16 +409,16 @@ rownames(AIC) <- c("5 knots",
                    "4 knots",
                    "3 knots",
                    "Linear")
-colnames(AIC) <- c("Breast",
+colnames(AIC) <- c("Postmenopausal breast",
                    "Colorectal",
                    "Lung",
-                   "Endometrial",
-                   "Ovarian",
+                   "Postmenopausal endometrial",
+                   "Postmenopausal ovarian",
                    "Pancreatic",
                    "Kidney")
 
 knitr::kable(as.data.frame(AIC), digits = 2,
-             caption = "AIC values for linear and nonlinear models (3-5 RCS knots) among common cancers")
+             caption = "AIC values for linear and nonlinear models (3-5 RCS knots) among common cancer types")
 ```
 
 
@@ -378,7 +439,7 @@ Postmenopausal breast cancer
 plotBreast5 <- ggplot(rms:::Predict(coxspline5Breast, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -393,7 +454,7 @@ plotBreast5 <- ggplot(rms:::Predict(coxspline5Breast, HLIScore=seq(1, 20),
 plotBreast4 <- ggplot(rms:::Predict(coxspline4Breast, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -409,7 +470,7 @@ plotBreast4 <- ggplot(rms:::Predict(coxspline4Breast, HLIScore=seq(1, 20),
 plotBreast <- ggplot(rms:::Predict(coxBreast, HLIScore=seq(1, 20),
                                    ref.zero = TRUE,
                                     fun=exp),
-                            xlab= "HLI Score",
+                            xlab= "HLI score",
                             ylab="HR",
                             adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
@@ -449,7 +510,7 @@ options(datadist="ddist")
 plotColorectal5 <- ggplot(rms:::Predict(coxspline5Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -464,7 +525,7 @@ plotColorectal5 <- ggplot(rms:::Predict(coxspline5Colorectal, HLIScore=seq(1, 20
 plotColorectal4 <- ggplot(rms:::Predict(coxspline4Colorectal, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -479,7 +540,7 @@ plotColorectal4 <- ggplot(rms:::Predict(coxspline4Colorectal, HLIScore=seq(1, 20
 plotColorectal <- ggplot(rms:::Predict(coxColorectal, HLIScore=seq(1, 20),
                                        ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                   geom_hline(yintercept=1, linetype="dashed") +
@@ -517,7 +578,7 @@ options(datadist="ddist")
 plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                                    xlab= "HLI Score",
+                                    xlab= "HLI score",
                                     ylab="HR",
                                     adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
@@ -533,7 +594,7 @@ plotLung5 <- ggplot(rms:::Predict(coxspline5Lung, HLIScore=seq(1, 20),
 plotLung4 <- ggplot(rms:::Predict(coxspline4Lung, HLIScore=seq(1, 20),
                                   ref.zero = TRUE,
                                   fun=exp),
-                          xlab= "HLI Score",
+                          xlab= "HLI score",
                           ylab="HR",
                           adj.subtitle = FALSE) + 
               geom_hline(yintercept=1, linetype="dashed") +
@@ -548,7 +609,7 @@ plotLung4 <- ggplot(rms:::Predict(coxspline4Lung, HLIScore=seq(1, 20),
 plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
                                  ref.zero = TRUE,
                                  fun=exp),
-                          xlab= "HLI Score",
+                          xlab= "HLI score",
                           ylab="HR",
                           adj.subtitle = FALSE) + 
             geom_hline(yintercept=1, linetype="dashed") +
@@ -582,7 +643,7 @@ options(datadist="ddist")
 plotEndometrial5 <- ggplot(rms:::Predict(coxspline5Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
                                          fun=exp),
-                                  xlab= "HLI Score",
+                                  xlab= "HLI score",
                                   ylab="HR",
                                   adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -597,7 +658,7 @@ plotEndometrial5 <- ggplot(rms:::Predict(coxspline5Endometrial, HLIScore=seq(1, 
 plotEndometrial4 <- ggplot(rms:::Predict(coxspline4Endometrial, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
                                          fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -612,7 +673,7 @@ plotEndometrial4 <- ggplot(rms:::Predict(coxspline4Endometrial, HLIScore=seq(1, 
 plotEndometrial <- ggplot(rms:::Predict(coxEndometrial, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -649,7 +710,7 @@ options(datadist="ddist")
 plotOvarian5 <- ggplot(rms:::Predict(coxspline5Ovarian, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
                                          fun=exp),
-                                  xlab= "HLI Score",
+                                  xlab= "HLI score",
                                   ylab="HR",
                                   adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -664,7 +725,7 @@ plotOvarian5 <- ggplot(rms:::Predict(coxspline5Ovarian, HLIScore=seq(1, 20),
 plotOvarian4 <- ggplot(rms:::Predict(coxspline4Ovarian, HLIScore=seq(1, 20),
                                          ref.zero = TRUE,
                                          fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -679,7 +740,7 @@ plotOvarian4 <- ggplot(rms:::Predict(coxspline4Ovarian, HLIScore=seq(1, 20),
 plotOvarian <- ggplot(rms:::Predict(coxOvarian, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -714,7 +775,7 @@ options(datadist="ddist")
 plotPancreatic5 <- ggplot(rms:::Predict(coxspline5Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                                xlab= "HLI Score",
+                                xlab= "HLI score",
                                 ylab="HR",
                                 adj.subtitle = FALSE) + 
                   geom_hline(yintercept=1, linetype="dashed") +
@@ -729,7 +790,7 @@ plotPancreatic5 <- ggplot(rms:::Predict(coxspline5Pancreatic, HLIScore=seq(1, 20
 plotPancreatic4 <- ggplot(rms:::Predict(coxspline4Pancreatic, HLIScore=seq(1, 20),
                                         ref.zero = TRUE,
                                         fun=exp),
-                          xlab= "HLI Score",
+                          xlab= "HLI score",
                           ylab="HR",
                           adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
@@ -744,7 +805,7 @@ plotPancreatic4 <- ggplot(rms:::Predict(coxspline4Pancreatic, HLIScore=seq(1, 20
 plotPancreatic <- ggplot(rms:::Predict(coxPancreatic, HLIScore=seq(1, 20),
                                        ref.zero = TRUE,
                                         fun=exp),
-                      xlab= "HLI Score",
+                      xlab= "HLI score",
                       ylab="HR",
                       adj.subtitle = FALSE) + 
                   geom_hline(yintercept=1, linetype="dashed") +
@@ -777,7 +838,7 @@ options(datadist="ddist")
 plotKidney5 <- ggplot(rms:::Predict(coxspline5Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                      xlab= "HLI Score",
+                      xlab= "HLI score",
                       ylab="HR",
                       adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -792,7 +853,7 @@ plotKidney5 <- ggplot(rms:::Predict(coxspline5Kidney, HLIScore=seq(1, 20),
 plotKidney4 <- ggplot(rms:::Predict(coxspline4Kidney, HLIScore=seq(1, 20),
                                     ref.zero = TRUE,
                                     fun=exp),
-                      xlab= "HLI Score",
+                      xlab= "HLI score",
                       ylab="HR",
                       adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
@@ -807,7 +868,7 @@ plotKidney4 <- ggplot(rms:::Predict(coxspline4Kidney, HLIScore=seq(1, 20),
 plotKidney <- ggplot(rms:::Predict(coxKidney, HLIScore=seq(1, 20),
                                    ref.zero = TRUE,
                                    fun=exp),
-                        xlab= "HLI Score",
+                        xlab= "HLI score",
                         ylab="HR",
                         adj.subtitle = FALSE) + 
             geom_hline(yintercept=1, linetype="dashed") +

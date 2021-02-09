@@ -25,7 +25,7 @@ casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 
 
 
-This additional file displays results from sensitivity analyses conducted on associations with the HLI modelled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle factors were excluded from the HLI score, creating five reduced models. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots. (COMMENT: reference HLI still needs to be set to 5 in plots)
+This additional file displays results from sensitivity analyses conducted on associations with the HLI modelled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle factors were excluded from the HLI score, creating five reduced models. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots.
 
 
 ```{r preparing reduced HLI vars, include=FALSE}
@@ -94,7 +94,7 @@ breastNoSmoking <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoSmok
 plotbreastNoSmoking <- ggplot(rms:::Predict(breastNoSmoking, HLInoSmoking=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -117,7 +117,7 @@ breastNoPA <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoPA, 3) +
 plotbreastNoPA <- ggplot(rms:::Predict(breastNoPA, HLInoPA=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -139,7 +139,7 @@ breastNoBMI <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoBMI, 3) 
 plotbreastNoBMI <- ggplot(rms:::Predict(breastNoBMI, HLInoBMI=seq(1, 16),
                                         ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -162,7 +162,7 @@ breastNoDiet <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoDiet, 3
 plotbreastNoDiet <- ggplot(rms:::Predict(breastNoDiet, HLInoDiet=seq(1, 16),
                                          ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -185,7 +185,7 @@ breastNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusBreast) ~ rcs(HLInoAlco
 plotbreastNoAlcohol <- ggplot(rms:::Predict(breastNoAlcohol, HLInoAlcohol=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -223,7 +223,7 @@ crcNoSmoking <- cph(Surv(ageEntry, ageExit, statusColorectal) ~
 plotCrcNoSmoking <- ggplot(rms:::Predict(crcNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -239,7 +239,7 @@ crcNoPA <- cph(Surv(ageEntry, ageExit, statusColorectal) ~
 plotCrcNoPA <- ggplot(rms:::Predict(crcNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -255,7 +255,7 @@ crcNoBMI <- cph(Surv(ageEntry, ageExit, statusColorectal) ~
 plotCrcNoBMI <- ggplot(rms:::Predict(crcNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -273,7 +273,7 @@ crcNoDiet <- cph(Surv(ageEntry, ageExit, statusColorectal) ~
 plotCrcNoDiet <- ggplot(rms:::Predict(crcNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -291,7 +291,7 @@ crcNoAlcohol <- cph(Surv(ageEntry, ageExit, statusColorectal) ~
 plotCrcNoAlcohol <- ggplot(rms:::Predict(crcNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -327,7 +327,7 @@ lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~
 plotLungNoSmoking <- ggplot(rms:::Predict(lungNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -343,7 +343,7 @@ lungNoPA <- cph(Surv(ageEntry, ageExit, statusLung) ~
 plotLungNoPA <- ggplot(rms:::Predict(lungNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -360,7 +360,7 @@ lungNoBMI <- cph(Surv(ageEntry, ageExit, statusLung) ~
 plotLungNoBMI <- ggplot(rms:::Predict(lungNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -378,7 +378,7 @@ lungNoDiet <- cph(Surv(ageEntry, ageExit, statusLung) ~
 plotLungNoDiet <- ggplot(rms:::Predict(lungNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -396,7 +396,7 @@ lungNoAlcohol <- cph(Surv(ageEntry, ageExit, statusLung) ~
 plotLungNoAlcohol <- ggplot(rms:::Predict(lungNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -441,7 +441,7 @@ endometrialNoSmoking <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoSmoking <- ggplot(rms:::Predict(endometrialNoSmoking, HLInoSmoking=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -463,7 +463,7 @@ endometrialNoPA <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLIn
 plotEndometrialNoPA <- ggplot(rms:::Predict(endometrialNoPA, HLInoPA=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -485,7 +485,7 @@ endometrialNoBMI <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HLI
 plotEndometrialNoBMI <- ggplot(rms:::Predict(endometrialNoBMI, HLInoBMI=seq(1, 16),
                                              ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -507,7 +507,7 @@ endometrialNoDiet <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs(HL
 plotEndometrialNoDiet <- ggplot(rms:::Predict(endometrialNoDiet, HLInoDiet=seq(1, 16),
                                               ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -529,7 +529,7 @@ endometrialNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusEndometrial) ~ rcs
 plotEndometrialNoAlcohol <- ggplot(rms:::Predict(endometrialNoAlcohol, HLInoAlcohol=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -576,7 +576,7 @@ ovarianNoSmoking <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoSm
 plotOvarianNoSmoking <- ggplot(rms:::Predict(ovarianNoSmoking, HLInoSmoking=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -598,7 +598,7 @@ ovarianNoPA <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoPA, 3) 
 plotOvarianNoPA <- ggplot(rms:::Predict(ovarianNoPA, HLInoPA=seq(1, 16),
                                             ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -620,7 +620,7 @@ ovarianNoBMI <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoBMI, 3
 plotOvarianNoBMI <- ggplot(rms:::Predict(ovarianNoBMI, HLInoBMI=seq(1, 16),
                                              ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -642,7 +642,7 @@ ovarianNoDiet <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoDiet,
 plotOvarianNoDiet <- ggplot(rms:::Predict(ovarianNoDiet, HLInoDiet=seq(1, 16),
                                               ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -664,7 +664,7 @@ ovarianNoAlcohol <- cph(Surv(ageMenopause, ageExit, statusOvarian) ~ rcs(HLInoAl
 plotOvarianNoAlcohol <- ggplot(rms:::Predict(ovarianNoAlcohol, HLInoAlcohol=seq(1, 16),
                                                  ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -705,7 +705,7 @@ pancreaticNoSmoking <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~
 plotPancreaticNoSmoking <- ggplot(rms:::Predict(pancreaticNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -721,7 +721,7 @@ pancreaticNoPA <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~
 plotPancreaticNoPA <- ggplot(rms:::Predict(pancreaticNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -737,7 +737,7 @@ pancreaticNoBMI <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~
 plotPancreaticNoBMI <- ggplot(rms:::Predict(pancreaticNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -755,7 +755,7 @@ pancreaticNoDiet <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~
 plotPancreaticNoDiet <- ggplot(rms:::Predict(pancreaticNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -773,7 +773,7 @@ pancreaticNoAlcohol <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~
 plotPancreaticNoAlcohol <- ggplot(rms:::Predict(pancreaticNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -812,7 +812,7 @@ kidneyNoSmoking <- cph(Surv(ageEntry, ageExit, statusKidney) ~
 plotKidneyNoSmoking <- ggplot(rms:::Predict(kidneyNoSmoking, HLInoSmoking=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding smoking status",
+                            xlab= "HLI score excluding smoking status",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -828,7 +828,7 @@ kidneyNoPA <- cph(Surv(ageEntry, ageExit, statusKidney) ~
 plotKidneyNoPA <- ggplot(rms:::Predict(kidneyNoPA, HLInoPA=seq(1, 16),
                                      ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding physical activity level",
+                            xlab= "HLI score excluding physical activity level",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -844,7 +844,7 @@ kidneyNoBMI <- cph(Surv(ageEntry, ageExit, statusKidney) ~
 plotKidneyNoBMI <- ggplot(rms:::Predict(kidneyNoBMI, HLInoBMI=seq(1, 16),
                                       ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding BMI",
+                            xlab= "HLI score excluding BMI",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -862,7 +862,7 @@ kidneyNoDiet <- cph(Surv(ageEntry, ageExit, statusKidney) ~
 plotKidneyNoDiet <- ggplot(rms:::Predict(kidneyNoDiet, HLInoDiet=seq(1, 16),
                                        ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding diet",
+                            xlab= "HLI score excluding diet",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
@@ -880,7 +880,7 @@ kidneyNoAlcohol <- cph(Surv(ageEntry, ageExit, statusKidney) ~
 plotKidneyNoAlcohol <- ggplot(rms:::Predict(kidneyNoAlcohol, HLInoAlcohol=seq(1, 16),
                                           ref.zero = TRUE,
                                         fun=exp),
-                            xlab= "HLI Score excluding alcohol consumption",
+                            xlab= "HLI score excluding alcohol consumption",
                           ylab="HR",
                       adj.subtitle = FALSE) + 
     geom_hline(yintercept=1, linetype="dashed") +
