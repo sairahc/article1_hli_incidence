@@ -1,14 +1,17 @@
 ---
 title: "Additional File 3"
-subtitle: "Demonstrating model fit of associations between the healthy lifestyle index (HLI) score modelled as a nonlinear term and incidences of common cancer types in the Norwegian Women and Cancer Study"
+subtitle: "Testing the application of several different knots on the healthy lifestyle index (HLI) score using restricted cubic splines to estimate nonlinear associations to common cancer types"
 
 #author: "Sairah L.F. Chen"
 #date: "08/07/2020"
 output: pdf_document
 
+header-includes:
+    - \usepackage{caption}
 
 ---
 
+\captionsetup[table]{labelformat=empty}
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -22,7 +25,7 @@ library(cowplot)
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
 
-This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI score modelled as a nonlinear term and incidences of common cancer types.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modelled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
+This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI score, modelled as a nonlinear term, and incidences of common cancer types.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modelled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
 
 
 ```{r, setup datadist, include=FALSE}
@@ -418,7 +421,7 @@ colnames(AIC) <- c("Postmenopausal breast",
                    "Kidney")
 
 knitr::kable(as.data.frame(AIC), digits = 2,
-             caption = "AIC values for linear and nonlinear models (3-5 RCS knots) among common cancer types")
+             caption = "Table S2. AIC values for linear and nonlinear models (3-5 RCS knots) among common cancer types")
 ```
 
 
@@ -428,7 +431,7 @@ All of the following plots use the HLI score of 5 as the reference. Hazard ratio
 \
 \
 
-Postmenopausal breast cancer
+Figure S2. Postmenopausal breast cancer
 
 ```{r breast knot plots, echo=FALSE}
 
@@ -496,7 +499,7 @@ breastSplineOptions
 
 \newpage
 
-Colorectal cancer
+Figure S3. Colorectal cancer
 
 
 
@@ -560,7 +563,7 @@ colorectalSplineOptions
 
 \newpage
 
-Lung cancer
+Figure S4. Lung cancer
 
 
 
@@ -617,7 +620,7 @@ plotLung <- ggplot(rms:::Predict(coxLung, HLIScore=seq(1, 20),
 
 
 
-lungSplineOptions <- ggarrange(plotLung3,
+lungSplineOptions <- ggarrange(plotLung5,
                                plotLung4,
                                plotLung,
                                ncol=2, nrow=2,
@@ -629,7 +632,7 @@ lungSplineOptions
 
 \newpage
 
-Postmenopausal endometrial cancer
+Figure S5. Postmenopausal endometrial cancer
 
 
 
@@ -696,7 +699,7 @@ endometrialSplineOptions
 
 \newpage
 
-Postmenopausal ovarian cancer
+Figure S6. Postmenopausal ovarian cancer
 
 
 
@@ -761,7 +764,7 @@ ovarianSplineOptions
 
 \newpage
 
-Pancreatic cancer
+Figure S7. Pancreatic cancer
 
 
 
@@ -825,7 +828,7 @@ pancreaticSplineOptions
 
 \newpage
 
-Kidney cancer
+Figure S8. Kidney cancer
 
 
 ```{r kidney knot plots, echo=FALSE}
@@ -889,7 +892,7 @@ kidneySplineOptions
 
 ```{r render, eval=FALSE, include=FALSE}
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/rcs.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/additional_file_3.pdf")
 
 ```
 
