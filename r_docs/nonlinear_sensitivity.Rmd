@@ -73,7 +73,7 @@ ddist$limits["Adjust to", "HLInoAlcohol"] <- 5
 
 \newpage
 
-Figure 1. Postmenopausal breast cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptives, parity, breastfeeding, using of hormone replacement therapy, and history of breast cancer n a first-degree relative. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S9. Postmenopausal breast cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptives, parity, breastfeeding, using of hormone replacement therapy, and history of breast cancer n a first-degree relative. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -209,7 +209,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 \newpage
 
-Figure 2. Colorectal cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S10. Colorectal cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -315,7 +315,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 \newpage
 
-Figure 3. Lung cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S11. Lung cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 ```{r lung, echo=FALSE, warning=FALSE, fig.height=10, fig.width=10}
 lungNoSmoking <- cph(Surv(ageEntry, ageExit, statusLung) ~ 
@@ -421,7 +421,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 \newpage
 
-Figure 4. Postmenopausal endometrial cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S12. Postmenopausal endometrial cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -555,7 +555,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 \newpage
 
-Figure 5. Postmenopausal ovarian cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy.  The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S13. Postmenopausal ovarian cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education, height, age at menarche, ever use of oral contraceptive, parity, breastfeeding, use of hormone replacement therapy.  The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -691,7 +691,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 \newpage
 
 
-Figure 6. Pancreatic cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S14. Pancreatic cancer incidence and its association with HLI score excluding single lifestyle factors. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -798,7 +798,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 \newpage
 
 
-Figure 7. Kidney cancer incidence and its association with HLI score excluding single lifestyle components. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
+Figure S15. Kidney cancer incidence and its association with HLI score excluding single lifestyle components. Models are adjusted for education and height. The shaded regions represent the 95% confidence intervals and the reference HLI score is set to 5. 
 
 
 
@@ -903,7 +903,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 ```{r do not run, eval=FALSE, include=FALSE }
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/Additional_file_5.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/additional_file_5.pdf")
 
 ```
 
