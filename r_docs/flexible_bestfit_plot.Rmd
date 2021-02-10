@@ -54,7 +54,7 @@ plotBreast3 <- ggplot(rms:::Predict(coxspline3Breast, HLIScore=seq(1, 20),
                             ylab="HR",
                             adj.subtitle = FALSE) +
               geom_hline(yintercept=1, linetype="dashed") +
-              ggtitle("Breast cancer") +
+              ggtitle("Postmenopausal breast cancer") +
               theme(legend.position = "none")
 
 #crc, 3 knots
@@ -106,7 +106,7 @@ plotEndometrial3 <- ggplot(rms:::Predict(coxspline3Endometrial, HLIScore=seq(1, 
                         ylab="HR",
                         adj.subtitle = FALSE) + 
                     geom_hline(yintercept=1, linetype="dashed") +
-                    ggtitle("Endometrial cancer")
+                    ggtitle("Postmenopausal endometrial cancer")
 
 
 # ovarian, 3 knots
@@ -126,7 +126,7 @@ plotOvarian3 <- ggplot(rms:::Predict(coxspline3Ovarian, HLIScore=seq(1, 20),
                         ylab="HR",
                         adj.subtitle = FALSE) + 
                 geom_hline(yintercept=1, linetype="dashed") +
-                ggtitle("Ovarian cancer")
+                ggtitle("Postmenopausal ovarian cancer")
 
 # pancreatic, 3 knots
 coxspline3Pancreatic <- cph(Surv(ageEntry, ageExit, statusPancreatic) ~ 
