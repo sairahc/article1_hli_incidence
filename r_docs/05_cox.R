@@ -614,7 +614,7 @@ breastNoSmoking.pool.HR <- extractHRwithCIs(breastNoSmoking.pool)
 
 crcNoSmoking.pool <- with(data=imputedMergedMids, 
                           exp=coxph(Surv(ageEntry, ageExit, statusColorectal)~ 
-                                      LInoSmoking + 
+                                      HLInoSmoking + 
                                       education +
                                       height)) %>%
   pool() %>%
