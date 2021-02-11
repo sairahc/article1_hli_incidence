@@ -68,7 +68,7 @@ fp <- forestplot(tableText,
                  forestPlotData,
                  new_page = TRUE,
                  boxsize = 0.1,
-                 is.summary = FALSE,
+                 is.summary = c(TRUE, rep(FALSE,7)), # forces first row of text table into summary element, making it bold
                  xlog=TRUE,
                  xticks = c(0.85,0.90,0.95,1.00,1.05),
                  grid=TRUE,
