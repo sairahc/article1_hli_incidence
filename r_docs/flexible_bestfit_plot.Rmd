@@ -173,7 +173,7 @@ plot <- plot_grid(plotBreast3, #need to label with a,b,c etc
 
 
 # save to png
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_2.png", width= 1000, height = 1000)
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/fig2.png", width= 1000, height = 1000)
 print(plot)
 dev.off()
 

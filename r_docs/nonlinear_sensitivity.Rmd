@@ -1,14 +1,22 @@
 ---
-title: "Additional File 5"
-subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle factors from the healthy lifestyle index (HLI) score"
+title: "Online Resource 5"
+subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle factors from the healthy lifestyle index (HLI) score in the Norwegian Women and Cancer Study (NOWAC)"
 
 #author: "Sairah L.F. Chen"
 #date: "14 12 2020"
 output: pdf_document
 
-# TODO Could not get these models to have their reference to be set to HLI=5 like in the main analysis. Will work on it. 
+
 
 ---
+
+Article title: "Combined lifestyle behaviours and the incidence of common cancer types in the Norwegian Women and Cancer Study (NOWAC)" \newline
+Journal: European Journal of Epidemiology \newline
+Authors: Sairah L F Chen (corresponding author) , Tonje Braaten, Kristin B Borch, Pietro Ferrari, Torkjel M Sandanger, Therese H Nøst \newline
+Corresponding author information: sairah.chen@uit.no; Department of Community Medicine, UiT The Arctic University of Norway, Hansine Hansens veg 18, 9019, Tromsø, Norway \newline 
+
+***
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -25,7 +33,7 @@ casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 
 
 
-This additional file displays results from sensitivity analyses conducted on associations with the HLI modelled as a nonlinear term using restricted cubic splines (RCS) with three knots. Single lifestyle factors were excluded from the HLI score, creating five reduced models. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots.
+This additional file displays results from sensitivity analyses conducted on associations with the HLI modelled as a nonlinear term using restricted cubic splines (RCS) with three knots in the NOWAC cohort (1996-2018) on complete-cases analysis data. Single lifestyle factors were excluded from the HLI score, creating five reduced models. Thus, five estimated associations were obtained for each cancer outcome. Here, we visualise these results in plots.
 
 
 ```{r preparing reduced HLI vars, include=FALSE}
@@ -903,7 +911,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 ```{r do not run, eval=FALSE, include=FALSE }
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/additional_file_5.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/ESM_5.pdf")
 
 ```
 

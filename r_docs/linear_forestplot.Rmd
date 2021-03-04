@@ -62,7 +62,7 @@ own <- fpTxtGp(label=gpar(cex=0.75),
 
 # merge plot with table
 
-png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_1.png", width=6, height=4, units="in", res = 300)
+png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/fig1.png", width=6.2, height=4, units="in", res = 300)
 
 fp <- forestplot(tableText,
                  forestPlotData,

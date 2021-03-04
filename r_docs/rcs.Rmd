@@ -1,6 +1,6 @@
 ---
-title: "Additional File 3"
-subtitle: "Testing the application of several different knots on the healthy lifestyle index (HLI) score using restricted cubic splines to estimate nonlinear associations to common cancer types"
+title: "Online Resource 3"
+subtitle: "Testing the application of several different knots on the healthy lifestyle index (HLI) score using restricted cubic splines to estimate nonlinear associations to common cancer types in the Norwegian Women and Cancer Study (NOWAC)"
 
 #author: "Sairah L.F. Chen"
 #date: "08/07/2020"
@@ -9,9 +9,18 @@ output: pdf_document
 header-includes:
     - \usepackage{caption}
 
+
 ---
 
-\captionsetup[table]{labelformat=empty}
+Article title: "Combined lifestyle behaviours and the incidence of common cancer types in the Norwegian Women and Cancer Study (NOWAC)" \newline
+Journal: European Journal of Epidemiology \newline
+Authors: Sairah L F Chen (corresponding author) , Tonje Braaten, Kristin B Borch, Pietro Ferrari, Torkjel M Sandanger, Therese H Nøst \newline
+Corresponding author information: sairah.chen@uit.no; Department of Community Medicine, UiT The Arctic University of Norway, Hansine Hansens veg 18, 9019, Tromsø, Norway \newline 
+
+***
+
+
+\captionsetup[table]{labelformat=empty} 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -22,10 +31,11 @@ library(ggpubr)
 library(cowplot)
 
 
+
 casesIncluded <- read.csv2(file="../data/casesIncluded25112020.csv")
 ```
 
-This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI score, modelled as a nonlinear term, and incidences of common cancer types.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modelled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
+This additional document displays Akaike's information criteria (AIC) values and plots generated for Cox proportional hazards regression models to estimate the associations between the HLI score, modelled as a nonlinear term, and incidences of common cancer types in the NOWAC cohort (1996-2018) on complete-case analysis data.  Restricted cubic splines (RCS) were employed to model the HLI as a nonlinear term, where terms modelled with three, four, and five knots located at the percentiles have been tested. AIC values and plots of linear associations are also included for comparison.
 
 
 ```{r, setup datadist, include=FALSE}
@@ -892,7 +902,7 @@ kidneySplineOptions
 
 ```{r render, eval=FALSE, include=FALSE}
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/additional_file_3.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/ESM_3.pdf")
 
 ```
 
