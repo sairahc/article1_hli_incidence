@@ -60,9 +60,26 @@ own # see parameters
 own <- fpTxtGp(label=gpar(cex=0.75),
                xlab = gpar(cex=0.75)) # change tabletext font
 
-# merge plot with table
+# merge plot with table to png
 
 png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/fig1.png", width=6.2, height=4, units="in", res = 300)
+
+fp <- forestplot(tableText,
+                 forestPlotData,
+                 new_page = TRUE,
+                 boxsize = 0.1,
+                 is.summary = c(TRUE, rep(FALSE,7)), # forces first row of text table into summary element, making it bold
+                 xlog=TRUE,
+                 xticks = c(0.85,0.90,0.95,1.00,1.05),
+                 grid=TRUE,
+                 graphwidth = unit(5, "cm"),
+                 txt_gp = own)
+dev.off()
+
+
+# merge forest plot and table to jpg
+
+jpeg("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_1.jpg", width=6.2, height=4, units="in", res = 600)
 
 fp <- forestplot(tableText,
                  forestPlotData,

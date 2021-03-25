@@ -177,6 +177,12 @@ png("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/fig2.png", wi
 print(plot)
 dev.off()
 
+# save to jpg
+
+jpeg("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/figure_2.jpg", width= 10, height = 10, units ="in", res = 600)
+print(plot)
+dev.off()
+
 #flexiblePlot
 
 ```
