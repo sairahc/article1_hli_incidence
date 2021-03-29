@@ -1,5 +1,5 @@
 ---
-title: "Online Resource 3"
+title: "Supplementary File 3"
 subtitle: "Testing the application of several different knots on the healthy lifestyle index (HLI) score using restricted cubic splines to estimate nonlinear associations to common cancer types in the Norwegian Women and Cancer Study (NOWAC)"
 
 #author: "Sairah L.F. Chen"
@@ -13,7 +13,7 @@ header-includes:
 ---
 
 Article title: "Combined lifestyle behaviours and the incidence of common cancer types in the Norwegian Women and Cancer Study (NOWAC)" \newline
-Journal: European Journal of Epidemiology \newline
+Journal: Clinical Epidemiology \newline
 Authors: Sairah L F Chen (corresponding author) , Tonje Braaten, Kristin B Borch, Pietro Ferrari, Torkjel M Sandanger, Therese H Nøst \newline
 Corresponding author information: sairah.chen@uit.no; Department of Community Medicine, UiT The Arctic University of Norway, Hansine Hansens veg 18, 9019, Tromsø, Norway \newline 
 
@@ -902,7 +902,7 @@ kidneySplineOptions
 
 ```{r render, eval=FALSE, include=FALSE}
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/ESM_3.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/rcs.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/Supplementary_3_clin_epi.pdf")
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Online Resource 5"
+title: "Supplementary File 5"
 subtitle: "Sensitivity analysis of nonlinear associations by exclusion of single lifestyle factors from the healthy lifestyle index (HLI) score in the Norwegian Women and Cancer Study (NOWAC)"
 
 #author: "Sairah L.F. Chen"
@@ -11,7 +11,7 @@ output: pdf_document
 ---
 
 Article title: "Combined lifestyle behaviours and the incidence of common cancer types in the Norwegian Women and Cancer Study (NOWAC)" \newline
-Journal: European Journal of Epidemiology \newline
+Journal: Clinical Epidemiology \newline
 Authors: Sairah L F Chen (corresponding author) , Tonje Braaten, Kristin B Borch, Pietro Ferrari, Torkjel M Sandanger, Therese H Nøst \newline
 Corresponding author information: sairah.chen@uit.no; Department of Community Medicine, UiT The Arctic University of Norway, Hansine Hansens veg 18, 9019, Tromsø, Norway \newline 
 
@@ -911,7 +911,7 @@ Abbreviations: HR = hazard ration, BMI = body mass index
 
 ```{r do not run, eval=FALSE, include=FALSE }
 
-rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/ESM_5.pdf")
+rmarkdown::render("C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/r_docs/nonlinear_sensitivity.Rmd", output_format= "pdf_document", output_file = "C:/Users/sch044/OneDrive - UiT Office 365/R/Paper1_new/output/Supplementary_5_clin_epi.pdf")
 
 ```
 
